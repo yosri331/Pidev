@@ -1,0 +1,52 @@
+
+{% extends "event/back.html.twig" %}
+{% block body %}
+
+    <h1 class="mt-4">Events table</h1>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Events
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple">
+        <tr>
+            <th>ID</th>
+            <th>name</th>
+            <th>description</th>
+            <th>date</th>
+            <th>image</th>
+            <th>organiseur</th>
+        </tr>
+        {% for a in event %}<tr>
+
+            <td>
+                {{ a.id }}
+            </td>
+            <td>
+                {{ a.nom }}
+            </td>
+            <td>
+                {{ a.description }}
+            </td>
+            <td>
+                {{ a.date|date('Y-m-d') }}
+            </td>
+            <td>{{ a.image }} </td>
+            <td>
+                {{a.organiseur}}
+            </td>
+            <td>
+                <a href="{{ path('d',{'id':a.id}) }}" class="btn btn-secondary">Delete event</a>
+                <a href="{{ path('modifier-event',{'id':a.id}) }}" class="btn btn-secondary">Modify event</a>
+                <a href="{{ path('afficher-comments',{'id':a.id}) }}" class="btn btn-primary">View Comments</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{path('ajouter-event')}}" class="btn btn-primary">Add event</a>
+    
+
+
+</html>
+{% endblock %}
