@@ -1,0 +1,40 @@
+{% extends 'cartfront.html.twig' %}
+
+ {% block home%}   <a href="href="{{path('front-office')}}" class="nav-item nav-link">Home</a> {% endblock %}
+{% block title %}Hello LignePanierController!{% endblock %}
+{%block bb%}
+{%endblock%}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<table class="table">
+<thead>
+            <tr>
+                <th>TITLE</th>
+                <th>PRICE</th>
+                <th>QT</th>
+                <th>TOTAL</th>
+                <th>actions</th>
+            </tr>
+    
+        </thead>
+<tbody>
+{% set i= 0%}
+{% for product in listProduct%}
+<thead>
+ <tr>
+     <td> {{ product.title}}</td>
+    <td> {{product.price}}</td>
+    <td> <input type="number" value={{listQt[i]}}
+        {% set i=i+1 %}
+        {% endfor %}</td>
+<td> {{ total }}</td>
+</tbody>
+</tr>
+   
+
+</thead>
+ </table>
+{% endblock %}
