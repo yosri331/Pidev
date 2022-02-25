@@ -1,0 +1,50 @@
+{% extends 'show.html.twig'%}
+
+{% block title %}Produit{% endblock %}
+ {% block hom %} <a href="{{ path('front_office') }}" class="nav-item nav-link">Home</a> {% endblock %}
+{% block header %}
+
+            <p class="m-0"><a href="{{ path('front_office') }}">Home</a></p>
+
+{% endblock %}
+
+{% block body %}
+    <h1>Détails du produit</h1>
+
+    <table class="table">
+        <tbody>
+
+        <tr>
+            <th>Name product</th>
+            <td>{{ produit.nomprod }}</td>
+        </tr>
+        <tr>
+
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>{{ produit.image }}</td>
+        </tr>
+        <tr>
+            <th>disponibility</th>
+            <td>{{ produit.disponibilite }}</td>
+        </tr>
+        <tr>
+            <th>Price of product</th>
+            <td>{{ produit.prix }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('front_prod') }}">back to list</a>
+
+{% endblock %}
+{% block image %}
+{% endblock %}
+{% block name %}
+{% endblock %}
+{% block descrip %}
+<p>{{ produit.dsecriptionprod }}</p>
+{% endblock %}
+{% block other %}
+{% endblock %}
