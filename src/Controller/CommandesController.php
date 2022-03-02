@@ -76,9 +76,10 @@ class CommandesController extends AbstractController
             
         }
     
-        return $this->render('commandes/newfront.html.twig', [
+        return $this->render('commandes/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+    
     
 }

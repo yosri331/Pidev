@@ -85,7 +85,7 @@ class CartController2 extends AbstractController{
             array_push($listIdProduitCart, $ligne->getId());
         }
 
-        return $this->render("ligne_panier\index.html.twig",[
+        return $this->render("ligne_panier\indexback.html.twig",[
             "id" => $listIdProduitCart,
             "listProduct"=>$listProducts,
             "listQt"=>$listQt,
