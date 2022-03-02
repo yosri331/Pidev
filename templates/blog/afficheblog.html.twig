@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Des Blogs{% endblock %}
+{% block css %}
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/table.css" rel="stylesheet" />
+{% endblock %}
+{% block body %}
+    <H1>Liste des blogs</H1>
+
+    <table border="5" cellspacing="10" style="position:relative">
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th> Delete </th>
+            <th> Update </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr {% for b in blog %}>
+            <td> {{ b.getImage()}}    </td>
+            <td>  {{ b.getId()}}   </td>
+            <td> {{ b.getTitre()}}    </td>
+            <td>{{ b.getDescription() }}</td>
+            <td>  {{ b.getDateBlog()}}   </td>
+            <td> <a href="{{ path('d2',{'id':b.id}) }}"> Delete </a></td>
+            <td> <a href="{{ path('updateblog',{'id':b.id}) }}"> Update </a></td>
+
+        </tr {% endfor %}>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Image</th>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th> Delete </th>
+            <th> Update </th>
+        </tr>
+        </tfoot>
+    </table>
+    <a href="{{ path('blog/AddBlog') }}"> Ajouter </a>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Ajouter Blog{% endblock %}
+{%block body%}
+    <h1>Ajout Blog</h1>
+    {{ form_start(form) }}
+    <div class="card-body">
+        <table>
+            <tr><td>{{ form_widget(form) }}</td></tr>
+
+        </table>
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

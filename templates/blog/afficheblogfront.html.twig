@@ -1,0 +1,47 @@
+{% extends 'front.html.twig' %}
+{% block title %}Liste Des Blogs{% endblock %}
+
+{% block body %}
+
+    <H1 style="margin:auto; text-align:center; display:block;" class="button large hpbottom">Liste des blogs</H1>
+
+    <table border="5" cellspacing="10" style="position:relative;margin-left: auto;margin-right:auto;" >
+        <thead>
+        <tr>
+            <th>Image</th>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th> Delete </th>
+            <th> Update </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr {% for b in blog %}>
+            <td> {{ b.getImage()}}    </td>
+            <td>  {{ b.getId()}}   </td>
+            <td> {{ b.getTitre()}}    </td>
+            <td>{{ b.getDescription() }}</td>
+            <td>  {{ b.getDateBlog()}}   </td>
+            <td> <a href="{{ path('d3',{'id':b.id}) }}"> Delete </a></td>
+            <td> <a href="{{ path('updateblogfront',{'id':b.id}) }}"> Update </a></td>
+
+        </tr {% endfor %}>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Image</th>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th> Delete </th>
+            <th> Update </th>
+        </tr>
+        </tfoot>
+    </table>
+    <a href="{{ path('blog/AddBlogFront') }}"  style="margin:auto; text-align:center; display:block;" class="button large hpbottom"> Ajouter </a>
+
+{% endblock %}
+

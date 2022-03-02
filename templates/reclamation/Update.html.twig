@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{%  block title %} Update Blog {%endblock%}
+{% block css %}
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="/css/table.css" rel="stylesheet" />
+{% endblock %}
+{%block body%} <h1>Mise a jour </h1>
+{{ form(form) }}
+
+{% endblock %}
