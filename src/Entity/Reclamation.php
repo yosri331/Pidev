@@ -5,10 +5,10 @@ namespace App\Entity;
 use App\Repository\ReclamationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 use phpDocumentor\Reflection\Types\ClassString;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 
 /**
  * @ORM\Entity(repositoryClass=ReclamationRepository::class)
@@ -22,8 +22,6 @@ class Reclamation
      */
     private $id;
 
-
-
     /**
      * @ORM\Column(type="string", length=30)
      */
@@ -35,18 +33,19 @@ class Reclamation
     private $description;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", length=250)
      * @var string A "Y-m-d" formatted value
      */
     private $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="reclamations")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $id_user;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $id_prod;
 
@@ -55,21 +54,10 @@ class Reclamation
         $metadata->addPropertyConstraint('date', new Assert\Date());
     }
 
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdReclam(): ?int
-    {
-        return $this->id_reclam;
-    }
-
-    public function setIdReclam(int $id_reclam): self
-    {
-        $this->id_reclam = $id_reclam;
-
-        return $this;
     }
 
     public function getTitre(): ?string
@@ -101,19 +89,19 @@ class Reclamation
         return $this->date;
     }
 
-    public function setDate(?string $date): self
+    public function setDate(string $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    public function getIdUser(): ?int
+    public function getIdUser(): ?user
     {
         return $this->id_user;
     }
 
-    public function setIdUser(int $id_user): self
+    public function setIdUser(?user $id_user): self
     {
         $this->id_user = $id_user;
 
@@ -125,12 +113,15 @@ class Reclamation
         return $this->id_prod;
     }
 
-    public function setIdProd(?int $id_prod): self
+    public function setIdProd(int $id_prod): self
     {
         $this->id_prod = $id_prod;
 
         return $this;
     }
 
-
+    public function __toString()
+    {
+        return  $this->id_user;
+    }
 }

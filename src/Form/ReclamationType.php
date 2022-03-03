@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Reclamation;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,7 @@ class ReclamationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre',TextType::class)
+            ->add('titre')
             ->add('description')
             ->add('date',TextType::class,[
                 'label'=>'date reclamation',
@@ -21,8 +22,8 @@ class ReclamationType extends AbstractType
                     'placeholder'=>'format :YYYY-MM-DD'
                 ]
             ])
-            ->add('id_user')
             ->add('id_prod')
+            ->add('id_user')
         ;
     }
 
