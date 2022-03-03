@@ -1,0 +1,46 @@
+{% extends 'back-office.html.twig' %}
+
+{% block title %}commandes{% endblock %}
+
+{% block body %}
+    <h1>commandes</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ commande.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ commande.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ commande.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ commande.Adresse }}</td>
+            </tr>
+             <tr>
+                <th>Telephone</th>
+                <td>{{ commande.Telephone }}</td>
+            </tr>
+             <tr>
+                <th>Eamil</th>
+                <td>{{ commande.email }}</td>
+            </tr>
+             <tr>
+                <th>Total</th>
+                <td>{{ commande.Total }}</td>
+            </tr>
+            <td>
+                    <a class="btn btn-primary" href="{{ path('ListCommande', {'id': commande.id}) }}">imprimer</a>
+                    
+
+                </td>
+        </tbody>
+    </table>
+
+{% endblock %}

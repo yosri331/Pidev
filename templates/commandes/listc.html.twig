@@ -1,9 +1,7 @@
-{% extends 'back-office.html.twig' %}
 
-{% block title %}commandes!{% endblock %}
 
 {% block body %}
-<h1>Les commandes</h1>
+<h1 align = "centre "> Commande</h1> 
 
     <table class="table">
     <thead class="thead-dark">
@@ -30,14 +28,9 @@
                 <td>{{ commande.email }}</td>
                 <td>{{ commande.quantiteProduit }}</td>
                 <td>{{ commande.total }}</td>
-                <td>
-                    <a class="btn btn-warning" href="{{ path('commandes_show', {'id': commande.id}) }}">show</a>
-                </td>
+                
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no commande found</td>
-            </tr>
+        
         {% endfor %}
         </tbody>
     </table>

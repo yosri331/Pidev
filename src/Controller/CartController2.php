@@ -104,5 +104,31 @@ class CartController2 extends AbstractController{
         return new Response("session added");
     }
 
+/**
+     * @Route("/search", name="produit_search", methods={"GET", "POST"})
+     */
+    public function search(CartRepository $cartRepository,Request $request): Response
+    {
+        $cart = $cartRepository->findAll();
+        $form = $this->createFormBuilder(null)
+            ->add('Title', TextType::class)
+            ->add('search', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-primary'
+                ]
+            ])
+            ->getForm();
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $re = $request->get('form');
+            $cart = $cartRepository->findBy(
+                ['nomprod' => $re['Title']]
+            );
+        }
+        return $this->render('produit/search.html.twig', [
+            'produits' => $cart,
+            'form' => $form->createView()
+            ]);
+    }
 }

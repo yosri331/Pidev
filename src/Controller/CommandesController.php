@@ -13,18 +13,33 @@ use App\Repository\CartRepository;
 use App\Repository\CommandesRepository;
 use App\Repository\LignePanierRepository;
 use App\Repository\ProductsRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+
 
 class CommandesController extends AbstractController
 {
+    
     /**
-     * @Route("/commandes", name="commandes")
+     * @Route("/commandes", name="commandes", methods={"GET"})
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        $donnees = $this->getDoctrine()->getRepository(Commandes::class)->findAll();
+
+        $commandes = $paginator->paginate(
+            $donnees, 
+            $request->query->getInt('page', 1), 
+            1
+        );
+        
         return $this->render('commandes/index.html.twig', [
-            'controller_name' => 'CommandesController',
+            'commandes' => $commandes,
         ]);
-    }
+    }  
+    
 
     /**
      * @Route("/commandes/new", name="commandes_new")
@@ -81,5 +96,56 @@ class CommandesController extends AbstractController
         ]);
     }
     
+     /**
+     *@Route("/commandes/show/{id}", name="commandes_show", methods={"GET"})
+     */
+    public function show(Commandes $commande): Response
+    {
+        return $this->render('commandes/show.html.twig', [
+            'commande' => $commande,
+         ]);
+    }
+    /**
+     * @Route("/listc", name="ListCommande", methods={"GET"})
+     */
+    public function listc(Request $request, PaginatorInterface $paginator): Response
+    {
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $donnees = $this->getDoctrine()->getRepository(Commandes::class)->findAll();
+
+        $commandes = $paginator->paginate(
+            $donnees, 
+            $request->query->getInt('page', 1), 
+            1
+        );
+        
+        
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('commandes/listc.html.twig', [
+            'commandes' => $commandes,
+        ]);
+        
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (inline view)
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => false
+        ]);
+        return $this->render('commandes/listc.html.twig', [
+            'commandes' => $commandes,
+        ]);
     
-}
+        
+}}
