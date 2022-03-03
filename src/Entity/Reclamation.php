@@ -6,6 +6,8 @@ use App\Repository\ReclamationRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\ClassString;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 
 /**
@@ -30,10 +32,11 @@ class Reclamation
     /**
      * @ORM\Column(type="string", length=250)
      */
-    private $decription;
+    private $description;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @var string A "Y-m-d" formatted value
      */
     private $date;
 
@@ -46,6 +49,11 @@ class Reclamation
      * @ORM\Column(type="integer", nullable=true)
      */
     private $id_prod;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('date', new Assert\Date());
+    }
 
     public function getId(): ?int
     {
@@ -76,14 +84,14 @@ class Reclamation
         return $this;
     }
 
-    public function getDecription(): ?string
+    public function getDescription(): ?string
     {
-        return $this->decription;
+        return $this->description;
     }
 
-    public function setDecription(string $decription): self
+    public function setDescription(string $description): self
     {
-        $this->decription = $decription;
+        $this->description = $description;
 
         return $this;
     }

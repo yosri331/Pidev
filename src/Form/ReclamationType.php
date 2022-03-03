@@ -14,7 +14,7 @@ class ReclamationType extends AbstractType
     {
         $builder
             ->add('titre',TextType::class)
-            ->add('decription')
+            ->add('description')
             ->add('date',TextType::class,[
                 'label'=>'date reclamation',
                 'attr'=>[
