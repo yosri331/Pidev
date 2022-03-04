@@ -6,10 +6,12 @@ use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @ORM\Entity(repositoryClass=ProduitRepository::class)
- *
+ * @Vich\Uploadable
  */
 class Produit
 {
@@ -17,43 +19,71 @@ class Produit
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("produit")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Nom du produit est obligatoire")
+     * @Groups("produit")
      */
     private $nomprod;
 
     /**
      * @ORM\Column(type="string", length=255)
       * @Assert\NotBlank(message="description du produit est obligatoire")
+     * @Groups("produit")
      */
     private $dsecriptionprod;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Nom du produit est obligatoire")
+     * @Groups("produit")
      */
     private $image;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="disponibilité du produit est obligatoire")
+     * @Groups("produit")
      */
     private $disponibilite;
 
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="prix du produit est obligatoire")
+     * @Groups("produit")
      */
     private $prix;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $promo;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="produit")
+     * @Groups("produit")
      */
     private $categorie;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private $imageprod;
+
+    /**
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="imageprod")
+     * @var File
+     */
+    private $imageFile;
+
+
+
+
 
     public function getId(): ?int
     {
@@ -119,6 +149,18 @@ class Produit
 
         return $this;
     }
+    public function getPromo(): ?bool
+    {
+        return $this->promo;
+    }
+
+    public function setPromo(bool $promo): self
+    {
+        $this->promo = $promo;
+
+        return $this;
+    }
+
 
     public function getCategorie(): ?Categorie
     {
@@ -131,4 +173,42 @@ class Produit
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getImageprod()
+    {
+        return $this->imageprod;
+    }
+
+    /**
+     * @param string $imageprod
+     */
+    public function setImageprod(?string $imageprod): self
+    {
+        $this->imageprod = $imageprod;
+        return $this;
+    }
+
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+
+    public function setImageFile(File $imageFile = null)
+    {
+        $this->imageFile = $imageFile;
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($imageFile) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+
+    }
+
 }

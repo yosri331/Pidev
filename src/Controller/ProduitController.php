@@ -2,17 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\FiltreData;
 use App\Entity\Produit;
+use App\Form\FiltreForm;
 use App\Form\Produit1Type;
 use App\Form\SearchprodType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/produit")
@@ -22,12 +26,18 @@ class ProduitController extends AbstractController
     /**
      * @Route("/", name="produit_index", methods={"GET"})
      */
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(ProduitRepository $produitRepository,SerializerInterface $serializerinterface): Response
     {
+        $produits=$produitRepository->findAll();
+       // $json=$serializerinterface->serialize($produits,'json',['groups'=>'produits']);
+       // dump($produits);
+       // die();
         return $this->render('produit/index.html.twig', [
             'produits' => $produitRepository->findAll(),
+
         ]);
     }
+
 
     /**
      * @Route("/search", name="produit_search", methods={"GET", "POST"})
@@ -71,10 +81,18 @@ class ProduitController extends AbstractController
     /**
      * @Route("/frontprod", name="front_prod", methods={"GET"})
      */
-    public function listef(ProduitRepository $produitRepository): Response
+    public function listef(ProduitRepository $produitRepository,Request $request,PaginatorInterface $paginator): Response
     {
+        $data = new FiltreData();
+        $form = $this->createForm(FiltreForm::class,$data);
+        $form->handleRequest($request);
+        $products=$produitRepository->findSearch($data);
+
+
+
         return $this->render('produit/shop.html.twig', [
-            'produits' => $produitRepository->findAll(),
+            'produits' => $products,
+            'form'=> $form->createView()
         ]);
     }
 
@@ -91,7 +109,7 @@ class ProduitController extends AbstractController
             $entityManager->persist($produit);
             $entityManager->flush();
 
-            return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('produit_search', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('produit/new.html.twig', [
@@ -153,4 +171,5 @@ class ProduitController extends AbstractController
 
         return $this->redirectToRoute('produit_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

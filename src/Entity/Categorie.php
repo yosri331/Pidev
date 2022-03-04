@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
@@ -17,22 +18,27 @@ class Categorie
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("produit")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\NotBlank(message="Nom du produit est obligatoire")
+     * @Groups("produit")
      */
     private $nomcat;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Nom du produit est obligatoire")
+     * @Assert\NotBlank(message="descriprtion du produit est obligatoire")
+     * @Groups("produit")
      */
     private $descriptioncat;
 
     /**
      * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="categorie")
+     * @Groups("produit")
      */
     private $produit;
 

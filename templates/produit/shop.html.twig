@@ -15,8 +15,26 @@
     <p class="m-0"><a href="{{ path('front_office') }}">Home</a></p>
 {% endblock %}
 
+{% block filtre1 %}
+    <div class="filter">
+{% include 'produit/filter.html.twig' with {form: form} only  %}
+    </div>
+{% endblock %}
+
+
+{% block filtre2 %}
+{% endblock %}
+
 {% block body %}
-    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+
+    <div class="container">
+        <div class="grid">
+        {% for produit in produits %}
+        {% include 'produit/shopfiltre.html.twig' with {produit: produit} only  %}
+        {% endfor %}
+    </div>
+    </div>
+    <!--<div class="col-lg-4 col-md-6 col-sm-12 pb-1">
         <div class="card product-item border-0 mb-4">
             {% for produit in produits %}
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -27,6 +45,7 @@
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-1">
 
                     <h6 class="text-truncate mb-3">{{ produit.nomprod }}</h6>
+                    <h6 class="text-truncate mb-3">{{ produit.disponibilite }}</h6>
                     <div class="d-flex justify-content-center">
                         <h6>{{ produit.prix }}</h6><h6 class="text-muted ml-2"><del>{{ produit.prix }}</del></h6>
                     </div>
@@ -38,7 +57,6 @@
                 </div>
             {% endfor %}
         </div>
-
-    </div>
+    </div>-->
 
 {% endblock %}

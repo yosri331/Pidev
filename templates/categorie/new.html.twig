@@ -12,6 +12,11 @@
         <td>{{ form_errors(form.nomcat) }}</td>
     </tr>
     <br>
+    <tr>
+        <td>{{ form_label(form.descriptioncat,'Description categorie') }}</td>
+        <td>{{ form_widget(form.descriptioncat) }}</td>
+        <td>{{ form_errors(form.descriptioncat) }}</td>
+    </tr>
 </table>
     {{ form_end(form) }}
 {% endblock %}

@@ -14,7 +14,7 @@ class Categorie1Type extends AbstractType
     {
         $builder
             ->add('nomcat')
-            //->add('descriptioncat')
+            ->add('descriptioncat')
             ->add('Ajouter',SubmitType::class)
         ;
     }

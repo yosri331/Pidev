@@ -17,7 +17,10 @@
             <th>Image</th>
             <th>Disponibilité</th>
             <th>Prix</th>
+            <th>Promotion</th>
             <th>actions</th>
+
+
         </tr>
         </thead>
         <tbody>
@@ -29,6 +32,8 @@
                 <td>{{ produit.image }}</td>
                 <td>{{ produit.disponibilite }}</td>
                 <td>{{ produit.prix }}</td>
+                <td>{{ produit.promo }}</td>
+
                 <td>
                     <button type="button" class="btn btn-outline-primary"> <a href="{{ path('produit_show', {'id': produit.id}) }}">show</a> </button>
                     <button type="button" class="btn btn-outline-primary"> <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a> </button>

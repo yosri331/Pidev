@@ -28,6 +28,30 @@
         <td>{{ form_widget(form.categorie) }}</td>
         <td>{{ form_errors(form.categorie) }}</td>
     </tr>
+    <tr>
+        <td>{{ form_label(form.dsecriptionprod,'Description produit') }}</td>
+        <td>{{ form_widget(form.dsecriptionprod) }}</td>
+        <td>{{ form_errors(form.dsecriptionprod) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.image,'Image') }}</td>
+        <td>{{ form_widget(form.image) }}</td>
+        <td>{{ form_errors(form.image) }}</td>
+    </tr>
+
+    <tr>
+        <td>{{ form_label(form.promo,'Promotion') }}</td>
+        <td>{{ form_widget(form.promo) }}</td>
+        <td>{{ form_errors(form.promo) }}</td>
+    </tr>
+
+    <tr>
+        <td>{{ form_label(form.imageFile,'Image Produit') }}</td>
+        <td>{{ form_widget(form.imageFile) }}</td>
+        <td>{{ form_errors(form.imageFile) }}</td>
+    </tr>
+
+
 </table>
 {{ form_end(form) }}
 {% endblock %}

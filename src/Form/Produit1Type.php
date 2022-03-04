@@ -4,9 +4,12 @@ namespace App\Form;
 
 use App\Entity\Produit;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Form\Type\VichImageType ;
 
 class Produit1Type extends AbstractType
 {
@@ -19,6 +22,12 @@ class Produit1Type extends AbstractType
             ->add('disponibilite')
             ->add('prix')
             ->add('categorie')
+            ->add('promo')
+            ->add('imageFile',VichImageType::class, [
+                'required' => false,
+                // Register new key "empty_data" with an empty string
+                'empty_data' => ''
+            ])
             ->add('Ajouter',SubmitType::class)
         ;
     }
