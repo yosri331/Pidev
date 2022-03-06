@@ -3,12 +3,62 @@
 {% block body %}
 
     <h1 class="mt-4">Events table</h1>
+    <div class="row ">
+        <div class="col-lg-5">
+            <a onclick="ShowAndHide()" class="mt-4 mb-3 btn btn-primary">Add event</a>
+        </div>
+    </div>
+    {{ form_start(form)}}
+    
+    <div class="row align-items-center d-flex justify-content-center">
+        <div class="col-lg-4"  id="SectionName" style="display: none;">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Add Event</h3></div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-floating mb-3">
+                            <i class="form-control ">{{form_label(form.nom)}}
+                                {{form_widget(form.nom)}}
+                            </i>
+         
+                            
+                        </div>
+                        <div class="form-floating mb-3">
+                            <i class="form-control">{{form_label(form.description)}}
+                                {{form_widget(form.description)}}</i>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <i class="">{{form_label(form.imageFile)}}
+                                {{form_widget(form.imageFile)}}</i>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <div class="form-control">{{form_label(form.participants)}}
+                                {{form_widget(form.participants)}}</div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <div class="form-control">{{form_label(form.date)}}
+                                {{form_widget(form.date)}}</div>
+                        </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                            <a class="small" href="password.html" style="visibility: hidden;">Forgot Password?</a>
+                            <div>{{ form_row(form.Submit) }}</div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    {{form_end(form)}}
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Events
         </div>
         <div class="card-body">
+            
             <table id="datatablesSimple">
         <tr>
             <th>ID</th>
@@ -17,6 +67,7 @@
             <th>date</th>
             <th>image</th>
             <th>organiseur</th>
+            <th>{{ dump(user) }}</th>
         </tr>
         {% for a in event %}<tr>
 
@@ -32,9 +83,10 @@
             <td>
                 {{ a.date|date('Y-m-d') }}
             </td>
-            <td>{{ a.image }} </td>
+            <td><img src="{{asset('assets/uploads/images/events/' ~ a.getImage())}}" alt="" width="200" height=""> </td>
             <td>
-                {{a.organiseur}}
+                {{a.utilisateur.nom}}
+                
             </td>
             <td>
                 <a href="{{ path('d',{'id':a.id}) }}" class="btn btn-secondary">Delete event</a>
@@ -44,9 +96,18 @@
         </tr>
         {% endfor %}
     </table>
-    <a href="{{path('ajouter-event')}}" class="btn btn-primary">Add event</a>
     
 
 
 </html>
+<SCRIPT>
+function ShowAndHide() {
+    var x = document.getElementById('SectionName');
+    if (x.style.display == 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}
+</SCRIPT>
 {% endblock %}

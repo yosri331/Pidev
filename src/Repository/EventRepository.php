@@ -19,24 +19,39 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    // /**
-    //  * @return Event[] Returns an array of Event objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Event[] 
+     */
+    
+    public function findByIdJoinedToReview(int $id): array
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT p, c
+            FROM App\Entity\Event p
+            INNER JOIN p.id_review c 
+            WHERE p.id = :id ' 
+        )->setParameter('id', $id);
+        
+        return $query->getResult();
+        
     }
-    */
+    /**
+      * @return Event[] 
+     */
+    
+    public function SortByDate(): array
+    {
+        $entityManager=$this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p 
+        FROM App\Entity\Event Order By date');
+        return $query->getResult();
+    
+    }
+    
+    
 
-    /*
+    
     public function findOneBySomeField($value): ?Event
     {
         return $this->createQueryBuilder('e')
@@ -46,5 +61,5 @@ class EventRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+    
 }

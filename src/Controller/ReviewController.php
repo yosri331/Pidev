@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Form\ReviewType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -9,7 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Reviews;
+use App\Repository\EventRepository;
 use App\Repository\ReviewsRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 class ReviewController extends AbstractController
@@ -26,9 +29,11 @@ class ReviewController extends AbstractController
      * @return \symfony\component\HttpFoundation\Response
      * @Route("/afficher-event/{id}" ,name="afficher-comments") 
      */
-    public function afficher(ReviewsRepository $rep,$id){
-        $review=$rep->findBy(['id_event'=>$id]);
-        return $this->render('event/afficherReviews.html.twig',['review'=>$review]);
+    public function afficher(ReviewsRepository $rep,$id,EventRepository $repo){
+        $event=$repo->find($id);
+
+        $review=$event->getIdReview();
+        return $this->render('event/afficherReviews.html.twig',['review'=>$review,'id'=>$id]);
 
 
     
@@ -46,10 +51,11 @@ class ReviewController extends AbstractController
     }
     /**
      * @param Request $req
+     * @param $
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("ajouter-review/{id_event}",name="add_review")
      */
-    public function addReview(ReviewsRepository $rep,ManagerRegistry $doctrine,$id_event,Request $req){
+    public function addReview(ReviewsRepository $rep,ManagerRegistry $doctrine,$id_event,Request $req,EventRepository $repo,UtilisateurRepository $userep){
         $review =new Reviews();
         $form=$this->createForm(ReviewType::class,$review);
         $form->add('Submit',SubmitType::class);
@@ -57,7 +63,8 @@ class ReviewController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $em=$doctrine->getManager();
             $review->setDate(new \DateTime());
-            $review->setIdEvent($id_event);
+            $event=$repo->find($id_event);
+            $review->setEvent($event);
             $em->persist($review);
             $em->flush();
             return $this->redirectToRoute('afficher-comments',['id'=>$id_event]);

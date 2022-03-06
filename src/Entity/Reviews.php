@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Event;
 use App\Repository\ReviewsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,37 +13,39 @@ class Reviews
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
-
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
+     */
     #[ORM\Column(type: 'string', length: 50)]
     private $nom;
-
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(min=10)
+     */
     #[ORM\Column(type: 'string', length: 255)]
     private $description;
-
+    /**
+     * @Assert\NotBlank
+     */
     #[ORM\Column(type: 'integer', nullable: true)]
     private $score;
-
+  
     #[ORM\Column(type: 'date')]
     private $date;
 
-    #[ORM\Column(type: 'integer')]
-    private $id_event;
+
+    #[ORM\ManyToOne(targetEntity: Event::class, inversedBy: 'id_review')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Event $event;
+
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $utilisateur;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdReview(): ?int
-    {
-        return $this->id_review;
-    }
-
-    public function setIdReview(int $id_review): self
-    {
-        $this->id_review = $id_review;
-
-        return $this;
     }
 
     public function getNom(): ?string
@@ -95,12 +98,32 @@ class Reviews
 
     public function getIdEvent(): ?int
     {
-        return $this->id_event;
+        $event=$this->event;
+        return $event->getId();
     }
 
-    public function setIdEvent(int $id_event): self
+
+
+    public function getEvent(): ?Event
     {
-        $this->id_event = $id_event;
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateur $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

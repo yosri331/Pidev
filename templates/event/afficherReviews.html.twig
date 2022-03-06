@@ -2,9 +2,22 @@
 {% extends "event/back.html.twig" %}
 {% block body %}
 
-    <h1 class="mt-4">Events table</h1>
-    <div class="card mb-4">
-        <div class="card-header">
+        
+            
+        {% if review is empty %}
+        <div class="card mb-4">
+
+            <div class="card-body">
+                <h1 class="mt-4">Couldnt find any reviews for this event</h1>
+                <a href="{{path('add_review',{'id_event':id})}}" class="btn btn-primary">Add Review</a>
+            </div>
+        </div>
+        
+             
+        {% else %}
+        <h1 class="mt-4">Events table</h1>
+             <div class="card mb-4">
+            <div class="card-header">
             <i class="fas fa-table me-1"></i>
             Events
         </div>
@@ -19,12 +32,10 @@
             <th>event id</th>
         </tr>
         
-            
-        {% if review %}
-        {% else %}
-        <h1>Couldnt find any reviews for this event</h1>
-        {% endif %}
-        {% for a in review %}<tr>
+        {% for a in review %}
+        
+        
+        <tr>
 
             <td>
                 {{ a.id }}
@@ -39,27 +50,24 @@
                 {{ a.score }}
             </td>
             <td>{{ a.date|date('Y-m-d') }} </td>
+            
             <td>
-                <input type="hidden" name="referer" 
-	                value="{{app.request.headers.get('referer')}}"/>
-                {{ a.getIdEvent() }}
-                {% set reviewid = a.getIdEvent()  %}
-                
-            </td>
-            <td>
-                <a href="{{ path('delete-review',{'id':a.id,'id_event':a.getIdEvent() }) }}" class="btn btn-secondary">Delete Review</a>
-                <a href="{{ path('modifier-review',{'id':a.id,'id_event':a.getIdEvent() }) }}" class="btn btn-secondary">Update Review</a>
+                <a href="{{ path('delete-review',{'id':a.id,'id_event':id }) }}" class="btn btn-secondary">Delete Review</a>
+                <a href="{{ path('modifier-review',{'id':a.id,'id_event':id }) }}" class="btn btn-secondary">Update Review</a>
                 
             </td>
         </tr>
-        
+        <tr><td><a href="{{path('add_review',{'id_event':id})}}" class="btn btn-primary">Add Review</a></td></tr>
         {% endfor %}
-        {% if review  %}
-        {% set review = review[0].getIdEvent() %}
         
-    </table>
-    <a href="{{path('add_review',{'id_event':review})}}" class="btn btn-primary">Add Review</a>
-    {% endif %}
+        
+        {% endif %}
+       </table>
+        
+  
+        
+    
+  
 
 
 </html>
