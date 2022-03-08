@@ -152,8 +152,63 @@
     </div>
 {% endblock %}
 
+
+{% block review %}
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="mb-4"> review for "{{ produit.nomprod }}"</h4>
+            <div class="media mb-4">
+                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                <div class="media-body">
+                    {% for comment in produit.comments %}
+                    {% if comment.parent == null %}
+                    <h6>Commentaire de {{comment.nickname}}<small> - <i>Publié le {{comment.getCreatAt|date("d/m/Y H:i") }}</i></small></h6>
+                   <div class="text-primary mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p> {{comment.content|raw}}</p>
+                        <button class="btn btn-primary px-3"><p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary ">Répondre</a></p> </button>
+
+
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="mb-4">Leave a review</h4>
+            <small>Your email address will not be published. Required fields are marked *</small>
+            <div class="d-flex my-3">
+                <p class="mb-0 mr-2">Your Rating * :</p>
+                <div class="text-primary">
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+            </div>
+
+                <div class="col-xs2 col-sm3", id="ajout-commentaire">
+                    <h2>Add Comment </h2>
+
+                    {{ form_start(commentForm) }}
+                    {{ form_end(commentForm) }}
+                   <!-- <button type="submit" id="form_submit" name="form[submit]" class="btn btn-primary px-3">
+                        Leave Your Review
+                    </button>-->
+                </div>
+
+        </div>
+    </div>
+{% endblock %}
+
 {% block comments %}
-    <script>
+  <!-- <script>
         window.onload = () => {
 
             // On met un écouteur d'évènements sur tous les boutons répondre
@@ -161,28 +216,32 @@
                 element.addEventListener("click", function(){
                     console.log(this);
                     //pour recuperder l'id du comment a repondre
-                  <!--  document.querySelector("#comments_parent").value = this.dataset.id;-->
+                     document.querySelector("#comments_parent").value = this.dataset.id;
                 });
             });
         }
-    </script>
-    <div class="grix xs2 sm3 gutter-0 card">
+    </script> -->
+    <!--<div class="grix xs2 sm3 gutter-0 card">
         <div class="col-xs2 col-sm3">
             <h2>Liste des commentaires</h2>
             {% for comment in produit.comments %}
-                <h3>Commentaire de {{comment.nickname}}</h3>
-                <p>Publié le {{comment.getCreatAt|date("d/m/Y H:i") }}</p>
-                <div>{{comment.content|raw}}</div>
-                <!--data id contient lenuméro du commentaire quand veut répondre-->
-                <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary ">Répondre</a></p>
+                {% if comment.parent == null %}
 
-
+                    <h3>Commentaire de {{comment.nickname}}</h3>
+                    <p>Publié le {{comment.getCreatAt|date("d/m/Y H:i") }}</p>
+                    <div>{{comment.content|raw}}</div>
+                    <!--data id contient lenuméro du commentaire quand veut répondre-->
+                <!--    <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary ">Répondre</a></p>
+                    {% for reply in comment.replies %}
+                        <p>Réponse publiée par {{reply.nickname}} le {{reply.getcreatedAt|date("d/m/Y H:i") }}</p>
+                        <div>{{reply.content|raw}}</div>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         </div>
         <div class="col-xs2 col-sm3", id="ajout-commentaire">
             <h2>Ajouter un commentaire </h2>
-
             {{ form(commentForm) }}
         </div>
-    </div>
+    </div>-->
 {% endblock %}

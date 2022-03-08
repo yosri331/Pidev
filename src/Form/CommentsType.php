@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Comments;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -11,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 
 class CommentsType extends AbstractType
@@ -20,26 +20,28 @@ class CommentsType extends AbstractType
     {
         $builder
             ->add('email',EmailType::class,[
-                'label'=>'Votre e-mail',
+                'label'=>'Your e-mail',
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
             ->add('nickname',TextType::class, [
-                'label' => 'Votre pseudo',
+                'label' => 'Your nickname',
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
             ->add('content',CKEditorType::class,[
-                'label' => 'Votre Commentaire',
+                'label' => 'Your Comment',
                 'attr' => [
                     'class' => 'form-control'
                 ]
             ])
-            ->add('rgbd',CheckboxType::class)
+            ->add('rgbd',CheckboxType::class,[
+                'label' => 'you agree?',])
             ->add('parent',HiddenType::class)
-            ->add('envoyer',SubmitType::class)
+            ->add('submit',SubmitType::class,[
+                'label' => 'Leave Your Review'])
         ;
     }
 
