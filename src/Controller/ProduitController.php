@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\FiltreData;
 use App\Entity\Produit;
+use App\Form\CommentsType;
 use App\Form\FiltreForm;
 use App\Form\Produit1Type;
 use App\Form\SearchprodType;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use DateTime;
 
 /**
  * @Route("/produit")
@@ -67,6 +70,29 @@ class ProduitController extends AbstractController
             ]);
     }
 
+
+    /**
+     * @Route("/searchajax", name="produit_searchajax", methods={"GET", "POST"})
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $requestString = $request->get('q');
+        $products =  $em->getRepository('AppBundle:Produit')->findEntitiesByString($requestString);
+        if(!$products) {
+            $result['products']['error'] = "product Not found :( ";
+        } else {
+            $result['products'] = $this->getRealEntities ($products);
+        }
+        return new Response(json_encode($result));
+    }
+    public function getRealEntities($products){
+        foreach ($products as $products){
+            $realEntities[$products->getId()] = [$products->getImageFile(),$products->getNomprod()];
+
+        }
+        return $realEntities;
+    }
 
     /**
      * @Route("/front", name="produit_front", methods={"GET"})
@@ -130,12 +156,45 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/f", name="produit_showfront", methods={"GET"})
+     * @Route("/{id}/f", name="produit_showfront", methods={"GET","POST"})
      */
-    public function showfront(Produit $produit): Response
+    public function showfront(Produit $produit,Request $request): Response
     {
+        // Partie commentaires
+        // On crée le commentaire "vierge"
+        $comment =new Comments();
+
+        // On génère le formulaire
+        $commentForm = $this->createForm(CommentsType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        // Traitement du formulaire
+        if($commentForm->isSubmitted() && $commentForm->isValid()){
+            $comment->setCreatAt(new DateTime());
+            $comment->setProduits($produit);
+
+           // On récupère le contenu du champ parentid
+            $parentid = $commentForm->get("parent")->getData();
+            // On va chercher le commentaire correspondant
+            $em = $this->getDoctrine()->getManager();
+            if($parentid != null){
+                $parent = $em->getRepository(Comments::class)->find($parentid);
+            }
+            // On définit le parent
+            $comment->setParent($parent ?? null);
+            // On va chercher le commentaire correspondant
+           // $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+            $this->addFlash('message', 'Votre commentaire a bien été envoyé');
+          //  return $this->redirectToRoute('produit_showfront', [], Response::HTTP_SEE_OTHER);
+
+        }
+
+
         return $this->render('produit/showfront.html.twig', [
             'produit' => $produit,
+            'commentForm' => $commentForm->createView()
         ]);
     }
 

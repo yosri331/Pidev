@@ -73,6 +73,18 @@ class ProduitRepository extends ServiceEntityRepository
         );
     }
 
+
+    public function findEntitiesByString($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p
+                FROM AppBundle:Produit p
+                WHERE p.nomprod LIKE :str'
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+    }
+
     // /**
     //  * @return Produit[] Returns an array of Produit objects
     //  */

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Détails du produit</h1>
+   <!-- <h1>Détails du produit</h1>
 
     <table class="table">
         <tbody>
@@ -36,15 +36,153 @@
         </tbody>
     </table>
 
-    <a href="{{ path('front_prod') }}">back to list</a>
+    <a href="{{ path('front_prod') }}">back to list</a>-->
 
 {% endblock %}
+
 {% block image %}
+<div class="row px-xl-5">
+    <div class="col-lg-5 pb-5">
+        <div id="product-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner border">
+                <div class="carousel-item active">
+                    <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="" class="card-img-top">
+                </div>
+
+            </div>
+            <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                <i class="fa fa-2x fa-angle-left text-dark"></i>
+            </a>
+            <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                <i class="fa fa-2x fa-angle-right text-dark"></i>
+            </a>
+        </div>
+    </div>
 {% endblock %}
 {% block name %}
+    <div class="col-lg-7 pb-5">
+        <h3 class="font-weight-semi-bold">{{ produit.nomprod }}</h3>
+        <div class="d-flex mb-3">
+            <div class="text-primary mr-2">
+                <small class="fas fa-star"></small>
+                <small class="fas fa-star"></small>
+                <small class="fas fa-star"></small>
+                <small class="fas fa-star-half-alt"></small>
+                <small class="far fa-star"></small>
+            </div>
+            <small class="pt-1">(50 Reviews)</small>
+        </div>
+        <h3 class="font-weight-semi-bold mb-4">{{ produit.prix }}dt</h3>
+        <p class="mb-4">{{ produit.disponibilite }}</p>
+        <div class="d-flex mb-3">
+            <p class="text-dark font-weight-medium mb-0 mr-3">
+                {% if produit.promo%}
+            <div class="text text-warning">Promo !</div>
+            {% endif %}
+            </p>
+
+        </div>
+
+        <!--pour panier----->
+        <div class="d-flex align-items-center mb-4 pt-2">
+            <div class="input-group quantity mr-3" style="width: 130px;">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary btn-minus" >
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+                <input type="text" class="form-control bg-secondary text-center" value="1">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary btn-plus">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+        </div>
+
+        <!--pour le partage -->
+        <div class="d-flex pt-2">
+            <p class="text-dark font-weight-medium mb-0 mr-2"></p>
+            <div class="d-inline-flex">
+                <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button" onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                    SHARE PRODUCT on :</a>
+                <br>
+                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button"
+                   onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a class="text-dark px-2" href="">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a class="text-dark px-2" href="">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a class="text-dark px-2" href="">
+                    <i class="fab fa-pinterest"></i>
+                </a>
+
+            </div>
+
+        </div>
+        <div>
+            <a href="{{ path('front_prod') }}">Back to list</a>
+        </div>
+
+
+    </div>
+</div>
 {% endblock %}
 {% block descrip %}
 <p>{{ produit.dsecriptionprod }}</p>
 {% endblock %}
+
 {% block other %}
+    <div class="container-fluid py-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
+        </div>
+    <div class="card" style="font-weight: bold; font-size:1.5rem;">
+    <div class="card-body">
+        {% for produit in produit %}
+            {% include 'produit/otherproduct.html.twig' with {produit: produit} only  %}
+        {% endfor %}
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block comments %}
+    <script>
+        window.onload = () => {
+
+            // On met un écouteur d'évènements sur tous les boutons répondre
+            document.querySelectorAll("[data-reply]").forEach(element => {
+                element.addEventListener("click", function(){
+                    console.log(this);
+                    //pour recuperder l'id du comment a repondre
+                  <!--  document.querySelector("#comments_parent").value = this.dataset.id;-->
+                });
+            });
+        }
+    </script>
+    <div class="grix xs2 sm3 gutter-0 card">
+        <div class="col-xs2 col-sm3">
+            <h2>Liste des commentaires</h2>
+            {% for comment in produit.comments %}
+                <h3>Commentaire de {{comment.nickname}}</h3>
+                <p>Publié le {{comment.getCreatAt|date("d/m/Y H:i") }}</p>
+                <div>{{comment.content|raw}}</div>
+                <!--data id contient lenuméro du commentaire quand veut répondre-->
+                <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary ">Répondre</a></p>
+
+
+            {% endfor %}
+        </div>
+        <div class="col-xs2 col-sm3", id="ajout-commentaire">
+            <h2>Ajouter un commentaire </h2>
+
+            {{ form(commentForm) }}
+        </div>
+    </div>
 {% endblock %}
