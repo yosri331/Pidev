@@ -1,0 +1,109 @@
+{% extends 'back-office.html.twig'%}
+
+
+{% block title %}Produit index{% endblock %}
+
+
+
+{% block body %}
+
+    <h2>Search A Post !!</h2>
+
+    <div class="sidebar-search">
+
+        <div class="input-group custom-search-form">
+
+            <input type="text" id="search" class="form-control" placeholder="Search here">
+        </div>
+        <!-- /input-group -->
+    </div>
+    <ul class="nav" id="side-menu">
+        <li>
+            <a href="#"> Search <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level" id="entitiesNav">
+            </ul>
+        </li>
+    </ul><br><br><br><br>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav").html('');
+                if (value.length >= minlength ) {
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('produit_searchajax') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "text",
+                        success: function(msg){
+                            //we need to check if the value is the same
+                            if (value===$(that).val()) {
+                                var result = JSON.parse(msg);
+                                $.each(result, function(key, arr) {
+                                    $.each(arr, function(id, value) {
+                                        if (key === 'posts') {
+                                            if (id !== 'error') {
+                                                console.log(value[1]);
+                                                entitySelector.append('<li><b>'+value[1]+'</b><a href="/'+id+'">'+'<img src="/uploads/products/'+value[0]+'" style="width: 50px; height: 50px"/>'+'</a></li>');
+                                            } else {
+                                                entitySelector.append('<li class="errorLi">'+value+'</li>');
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+
+    <h1>Liste des produits</h1>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>Nom Produit</th>
+                <th>Dsecription produit</th>
+                <th>Image</th>
+                <th>Disponibilité</th>
+                <th>Prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+
+                <td>{{ produit.nomprod }}</td>
+                <td>{{ produit.dsecriptionprod }}</td>
+                <td>{{ produit.image }}</td>
+                <td>{{ produit.disponibilite }}</td>
+                <td>{{ produit.prix }}</td>
+                <td>
+                    <a href="{{ path('produit_show', {'id': produit.id}) }}">show</a>
+                    <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('produit_new') }}">Create new</a>
+{% endblock %}

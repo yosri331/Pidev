@@ -1,0 +1,23 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        terrain_directory:
+            uri_prefix: '%app.path.terrain_directory%'
+            upload_destination: '%kernel.project_dir%/public%app.path.terrain_directory%'
+            inject_on_load: false
+            delete_on_remove: true
+            delete_on_update: true
+        events_directory:
+            uri_prefix: '%app.path.events_directory%'
+            upload_destination: '%kernel.project_dir%/public%app.path.events_directory%'
+            namer: 'Vich\UploaderBundle\Naming\UniqidNamer'
+            delete_on_remove: true
+            delete_on_update: true
+        product_images:
+                uri_prefix:         '%app.path.product_images%'
+                upload_destination: '%kernel.project_dir%/public/%app.path.product_images%'
+                inject_on_load: false
+                delete_on_remove: true
+                delete_on_update: true
+

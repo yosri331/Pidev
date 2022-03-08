@@ -1,0 +1,28 @@
+<style>
+    .grid{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        grid-gap: 20px;
+    }
+</style>
+<div class="card" style="font-weight: bold; font-size:1.5rem;">
+    <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="" class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">{{ produit.nomprod }}</h5>
+        <div class="card-title text-primary">
+            {{ produit.prix | number_format(0,',','')}} dt
+            {% if produit.promo%}
+            <div class="text text-warning">Promo !</div>
+            {% endif %}
+        </div>
+        <p class="text text-muted"> {{ produit.dsecriptionprod }}</p>
+        <div>
+            {% for c in produit.categorie %}
+                <em class="text-muted text-primary text-italic">#{{ c.nomcat }}</em>
+            {% endfor %}
+        </div>
+        <div class="card-footer d-flex justify-content-between bg-light border">
+            <a href="{{ path('produit_showfront', {'id': produit.id}) }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+        </div>
+    </div>
+</div>

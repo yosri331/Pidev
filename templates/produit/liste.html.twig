@@ -1,0 +1,49 @@
+{% extends 'shop.html.twig'%}
+{% block home%}   <a href="{{ path('front_office') }}" class="nav-item nav-link">Home</a> {% endblock %}
+{% block header %}
+    <p class="m-0"><a href="{{ path('front_office') }}">Home</a></p>
+{% endblock %}
+{% block search %}
+{% endblock %}
+
+
+{% block body  %}
+    <table  class="table">
+        <thead>
+        <tr>
+
+            <th>Nom Produit</th>
+            <th>Dsecription produit</th>
+            <th>Image</th>
+            <th>Disponibilité</th>
+            <th>Prix</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+
+                <td>{{ produit.nomprod }}</td>
+                <td>{{ produit.dsecriptionprod }}</td>
+                <td>{{ produit.image }}</td>
+                <td>{{ produit.disponibilite }}</td>
+                <td>{{ produit.prix }}</td>
+                <td>
+                    <a href="{{ path('produit_showfront', {'id': produit.id}) }}">show</a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}
+{% block shop  %}
+{% endblock %}

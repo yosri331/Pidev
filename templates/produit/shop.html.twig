@@ -1,0 +1,64 @@
+{% extends 'shopprod.html.twig' %}
+{% block title %}!{% endblock %}
+
+ {% block rest %}
+ {% endblock %}
+
+{% block size %}
+{% endblock %}
+
+{% block home%}
+    <a href="{{ path('front_office') }}" class="nav-item nav-link">Home</a>
+{% endblock %}
+
+{% block header %}
+    <p class="m-0"><a href="{{ path('front_office') }}">Home</a></p>
+{% endblock %}
+
+{% block filtre1 %}
+    <div class="filter">
+{% include 'produit/filter.html.twig' with {form: form} only  %}
+    </div>
+{% endblock %}
+
+
+{% block filtre2 %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="grid">
+        {% for produit in produits %}
+        {% include 'produit/shopfiltre.html.twig' with {produit: produit} only  %}
+        {% endfor %}
+    </div>
+    </div>
+
+
+    <!--<div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+        <div class="card product-item border-0 mb-4">
+            {% for produit in produits %}
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <img class="img-fluid w-100" src="{{ asset("front/img/ballon.jpg")}}" alt="">
+                </div>
+
+
+                <div class="card-body border-left border-right text-center p-0 pt-4 pb-1">
+
+                    <h6 class="text-truncate mb-3">{{ produit.nomprod }}</h6>
+                    <h6 class="text-truncate mb-3">{{ produit.disponibilite }}</h6>
+                    <div class="d-flex justify-content-center">
+                        <h6>{{ produit.prix }}</h6><h6 class="text-muted ml-2"><del>{{ produit.prix }}</del></h6>
+                    </div>
+
+                </div>
+
+                <div class="card-footer d-flex justify-content-between bg-light border">
+                    <a href="{{ path('produit_showfront', {'id': produit.id}) }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>-->
+
+{% endblock %}

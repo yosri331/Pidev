@@ -1,0 +1,59 @@
+{% extends 'back-office.html.twig'%}
+{% block body %}
+<h1>Ajouter un Produit</h1>
+
+{{ form_start(form,{'attr':{'novalidate':'novalidate' }})}}
+<table>
+    <tr>
+        <td>{{ form_label(form.nomprod,'Nom produit') }}</td>
+        <td>{{ form_widget(form.nomprod) }}</td>
+        <td>{{ form_errors(form.nomprod) }}</td>
+    </tr>
+    <br>
+
+    <br> <tr>
+        <td>{{ form_label(form.disponibilite,'Disponibilite') }}</td>
+        <td>{{ form_widget(form.disponibilite) }}</td>
+        <td>{{ form_errors(form.disponibilite) }}</td>
+    </tr>
+    <br>
+    <tr>
+        <td>{{ form_label(form.prix,'Prix') }}</td>
+        <td>{{ form_widget(form.prix) }}</td>
+        <td>{{ form_errors(form.prix) }}</td>
+    </tr>
+    <br>
+    <tr>
+        <td>{{ form_label(form.categorie,'Categorie') }}</td>
+        <td>{{ form_widget(form.categorie) }}</td>
+        <td>{{ form_errors(form.categorie) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.dsecriptionprod,'Description produit') }}</td>
+        <td>{{ form_widget(form.dsecriptionprod) }}</td>
+        <td>{{ form_errors(form.dsecriptionprod) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.image,'Image') }}</td>
+        <td>{{ form_widget(form.image) }}</td>
+        <td>{{ form_errors(form.image) }}</td>
+    </tr>
+
+    <tr>
+        <td>{{ form_label(form.promo,'Promotion') }}</td>
+        <td>{{ form_widget(form.promo) }}</td>
+        <td>{{ form_errors(form.promo) }}</td>
+    </tr>
+
+    <tr>
+        <td>{{ form_label(form.imageFile,'Image Produit') }}</td>
+        <td>{{ form_widget(form.imageFile) }}</td>
+        <td>{{ form_errors(form.imageFile) }}</td>
+    </tr>
+
+
+</table>
+{{ form_end(form) }}
+{% endblock %}
+{% block dash %}
+{% endblock %}
