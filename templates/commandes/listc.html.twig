@@ -1,13 +1,36 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-{% block body %}
-<h1 align = "centre "> Commande</h1> 
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
 
-    <table class="table">
-    <thead class="thead-dark">
-        
-            <tr>
-                <th>Id</th>
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+<img align="right" src="{{ asset ('public/back/assets/img/sp.png" alt="logo" ')}}">
+<h1 style="color:red;">SPORTACUS</h1>
+
+<h2 align="center">Votre commande</h2>
+
+
+
+<table>
+  <tr>
+    <th>Id</th>
                 <th>nom</th>
                 <th>Prenom</th>
                 <th>adresse</th>
@@ -15,10 +38,8 @@
                 <th>email</th>
                 <th>quantite</th>
                 <th>total</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for commande in commandes %}
+  </tr>
+  {% for commande in commandes %}
             <tr>
                 <td>{{ commande.id }}</td>
                 <td>{{ commande.nom }}</td>
@@ -32,7 +53,28 @@
             </tr>
         
         {% endfor %}
-        </tbody>
-    </table>
-      {{ knp_pagination_render(commandes) }}
-    {% endblock %}
+ 
+
+</table>
+<h4></h4>
+<h4></h4>
+<p align="right">Merci</p>
+<h4></h4>
+<h4></h4>
+<h4></h4>
+<h4></h4>
+<h4></h4>
+<h4></h4>
+<h4></h4>
+<h4></h4>
+
+<h2 style="color:blue;">Contacter Nous</h2>
+
+<h4>Tel : +21671078897 </h4>
+<h4 >Email : SPORTACUS@gmail.com </h4>
+
+
+
+</body>
+</html>
+

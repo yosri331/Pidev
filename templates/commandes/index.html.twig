@@ -3,6 +3,7 @@
 {% block title %}commandes!{% endblock %}
 
 {% block body %}
+
 <h1>Les commandes</h1>
 
     <table class="table">
@@ -41,5 +42,6 @@
         {% endfor %}
         </tbody>
     </table>
-      {{ knp_pagination_render(commandes) }}
+     <h5 align="center"> {{ knp_pagination_render(commandes) }} </h5>
+      
     {% endblock %}

@@ -1,12 +1,24 @@
+
 {% extends 'back-office.html.twig' %}
 {% block body %}
-<h1>Ajouter tes coordonnées </h1>
-<table>
+
+
+<h1 align="center">Ajouter tes coordonnées</h1>
+<h4 style="color:blue;">
+
 {{ form_start(form)}}
 
  {{ form_widget(form) }}
+ </h4>
 <a> <button type="Submit" class="btn btn-success">save</button> </a>
 
 {{ form_end(form)}}
-</table>
+
+
+
+
+
 {% endblock %}
+
+
+

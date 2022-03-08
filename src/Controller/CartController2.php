@@ -24,6 +24,20 @@ class CartController2 extends AbstractController{
 
         $product = $repoProduct->find($id);
         $cartId=$request->getSession()->get("cartId",null);
+    //id user 
+    
+/**entite cart fiha champ valide 
+ * valide = false => cart hiya panier
+ * valide=true => cart hiya cmd
+ * 
+ * 
+ * if user.getCart :==  null
+ * on cree une nouvelle panier  $cart=new Cart();  cart.setUSer persist
+ * on ajoute ligne panier set product
+ * else if user.getCart !=  null (user has his own cart)
+ * if product in ligne panier find by id cart w id prod if true ++qte
+ * sinn new ligne panier
+ */
         $cart=$repo->find($cartId);
 
         if ($cart==null){
@@ -103,32 +117,43 @@ class CartController2 extends AbstractController{
         $request->getSession()->set("cartId",27);
         return new Response("session added");
     }
-
 /**
-     * @Route("/search", name="produit_search", methods={"GET", "POST"})
+     * @Route("/{id}", name="produit_delete", methods={"POST"})
      */
-    public function search(CartRepository $cartRepository,Request $request): Response
+    public function delete(Request $request, cart $cart, EntityManagerInterface $entityManager): Response
     {
-        $cart = $cartRepository->findAll();
-        $form = $this->createFormBuilder(null)
-            ->add('Title', TextType::class)
-            ->add('search', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-primary'
-                ]
-            ])
-            ->getForm();
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $re = $request->get('form');
-            $cart = $cartRepository->findBy(
-                ['nomprod' => $re['Title']]
-            );
+        if ($this->isCsrfTokenValid('delete'.$cart->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($cart);
+            $entityManager->flush();
         }
-        return $this->render('produit/search.html.twig', [
-            'produits' => $cart,
-            'form' => $form->createView()
-            ]);
+
+        return $this->redirectToRoute('ligne_panier_index', [], Response::HTTP_SEE_OTHER);
     }
+   /**
+     * @Route("/lignef", name="lignef")
+     */
+    public function indexf(Request $request,CartRepository $repoCart, LignePanierRepository $repoLigne, ProductsRepository $repoProduct){
+        //$cart=$repoCart->find($request->getSession()->get("cartId"));
+        $cartId=$request->getSession()->get("cartId",null);
+        $cart=$repoCart->find($cartId);
+        $lignePanier=$repoLigne->findBy(array('Cart' => $cart->getId()));
+        $listProducts=[];
+        $listQt=[];
+        $listIdProduitCart=[];
+        foreach($lignePanier as $ligne ){
+            $product=$repoProduct->find($ligne->getProduct()->getId());
+            array_push($listProducts,$product);
+            array_push($listQt,$ligne->getQuantite());
+            array_push($listIdProduitCart, $ligne->getId());
+        }
+
+        return $this->render("ligne_panier\index.html.twig",[
+            "id" => $listIdProduitCart,
+            "listProduct"=>$listProducts,
+            "listQt"=>$listQt,
+            "total"=>$cart->getTotal()
+        ]);
+
+ 
+   }
 }

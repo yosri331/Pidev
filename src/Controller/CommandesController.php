@@ -32,7 +32,7 @@ class CommandesController extends AbstractController
         $commandes = $paginator->paginate(
             $donnees, 
             $request->query->getInt('page', 1), 
-            1
+            2
         );
         
         return $this->render('commandes/index.html.twig', [
@@ -96,6 +96,60 @@ class CommandesController extends AbstractController
         ]);
     }
     
+    /**
+     * @Route("/commandes/newf", name="commandes_newfront")
+     */
+    public function newfront(Request $request,CommandesRepository $commandesRepository,CartRepository $repoCart, LignePanierRepository $repoLigne, ProductsRepository $ProductsRepository): Response
+    {
+        $commande = new Commandes();
+        $form = $this->createForm(CommandesType::class, $commande);
+        $form->handleRequest($request);
+
+        if ( $form->isSubmitted() && $form->isValid() ){
+            $cartId=$request->getSession()->get("cartId",null);
+            $cart=$repoCart->find($cartId);
+            $lignePanier=$repoLigne->findBy(array('Cart' => $cart->getId()));
+            $listProducts=[];
+            $listQt=[];
+            foreach($lignePanier as $ligne ){
+                $product=$ProductsRepository->findOneBy(['id' => $ligne->getProduct()->getId()]);
+                array_push($listProducts,$product);
+                array_push($listQt,$ligne->getQuantite());
+            }
+
+            $id_for_commande = $commandesRepository->findlastidcommande();
+            if ( $id_for_commande){
+                $idCommande = $id_for_commande[0]->getIdCommande();
+                $idCommande = $idCommande++;
+            }else{
+                $idCommande = 1;
+            }
+            $count_products = sizeof($listProducts);
+            $commande->setIdCommande($idCommande);
+            $commande->setTotal($cart->getTotal());
+            //dd($listProducts[0] , $listQt , $commande, $idCommande);
+            $entityManager = [$count_products];
+            for( $i = 0 ; $i < $count_products ; $i++){
+                $commande->setProduct($listProducts[$i]);
+                $commande->setQuantiteProduit($listQt[$i]);
+                
+                $entityManager[$i] = $this->getDoctrine()->getManager();
+                $entityManager[$i]->persist($commande);
+                $entityManager[$i]->flush();
+                $entityManager[$i]->clear();
+
+            }
+
+
+
+            
+            return $this->render('commandes/succee.html.twig');
+        }
+    
+        return $this->render('commandes/newfront.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
      /**
      *@Route("/commandes/show/{id}", name="commandes_show", methods={"GET"})
      */
