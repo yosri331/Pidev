@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    {% block stylesheets %} {% endblock %}
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -108,8 +109,8 @@
             </div>
         </nav>
     </div>
-    {% block stylesheets %} {% endblock %}
-    {% block javascript %} {% endblock %}
+
+
     {% block search %} {% endblock %}
     <div id="layoutSidenav_content">
 
@@ -196,5 +197,6 @@
 <script src="{{ asset ('assets/assets/demo/chart-bar-demo.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
 <script src="{{ asset ('assets/js/datatables-simple-demo.js')}}"></script>
+{% block javascript %} {% endblock %}
 </body>
 </html>
