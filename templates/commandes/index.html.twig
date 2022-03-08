@@ -4,7 +4,14 @@
 
 {% block body %}
 
-<h1>Les commandes</h1>
+<form>
+<h1></h1>
+<h4 align="right"> <input  type="text" name = "nom"> <input class="btn btn-dark" align="right" type="submit" value = "recherche"> </h4>
+
+
+
+</form>
+<h1 align="center">Les commandes</h1>
 
     <table class="table">
     <thead class="thead-dark">
@@ -42,6 +49,6 @@
         {% endfor %}
         </tbody>
     </table>
-     <h5 align="center"> {{ knp_pagination_render(commandes) }} </h5>
+     <h5 align="center"> {{ knp_pagination_render(commandes) }}  </h5>
       
     {% endblock %}

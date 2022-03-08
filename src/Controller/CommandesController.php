@@ -32,8 +32,15 @@ class CommandesController extends AbstractController
         $commandes = $paginator->paginate(
             $donnees, 
             $request->query->getInt('page', 1), 
-            2
+            1
         );
+        if($request->isMethod('POST'))
+        {
+            $nom = $request->get('nom');
+            $donnees = $this->getDoctrine()->getRepository(Commandes::class)->findBy(array('nom'=>$nom));
+        }
+        
+        
         
         return $this->render('commandes/index.html.twig', [
             'commandes' => $commandes,
@@ -202,4 +209,8 @@ class CommandesController extends AbstractController
         ]);
     
         
-}}
+}
+
+
+    
+}
