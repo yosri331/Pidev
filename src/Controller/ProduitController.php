@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\SerializerInterface;
 use DateTime;
 
@@ -72,27 +73,28 @@ class ProduitController extends AbstractController
 
 
     /**
-     * @Route("/searchajax", name="produit_searchajax", methods={"GET", "POST"})
-     */
-    public function searchAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $requestString = $request->get('q');
-        $products =  $em->getRepository('AppBundle:Produit')->findEntitiesByString($requestString);
-        if(!$products) {
-            $result['products']['error'] = "product Not found :( ";
-        } else {
-            $result['products'] = $this->getRealEntities ($products);
-        }
-        return new Response(json_encode($result));
+ * @Route("/searchajax", name="produit_searchajax", methods={"GET", "POST"})
+ */
+public function searchAction(Request $request,ProduitRepository $rep,ManagerRegistry $doctrine)
+{
+    $em = $doctrine->getManager();
+    $requestString = $request->get('q');
+    $products =  $rep->findEntitiesByString($requestString);
+    if(!$products) {
+        $result['products']['error'] = "product Not found :( ";
+    } else {
+        $result['products'] = $this->getRealEntities ($products);
     }
-    public function getRealEntities($products){
-        foreach ($products as $products){
-            $realEntities[$products->getId()] = [$products->getImageFile(),$products->getNomprod()];
+    return new Response(json_encode($result));
+}
+public function getRealEntities($products){
+    foreach ($products as $products){
+        $realEntities[$products->getId()] = [$products->getImageprod(),$products->getNomprod()];
 
-        }
-        return $realEntities;
     }
+    return $realEntities;
+}
+
 
     /**
      * @Route("/front", name="produit_front", methods={"GET"})
@@ -148,8 +150,9 @@ class ProduitController extends AbstractController
     /**
      * @Route("/{id}", name="produit_show", methods={"GET"})
      */
-    public function show(Produit $produit): Response
+    public function show($id,ProduitRepository $rep): Response
     {
+        $produit=$rep->find($id);
         return $this->render('produit/show.html.twig', [
             'produit' => $produit,
         ]);

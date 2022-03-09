@@ -1,4 +1,5 @@
 {% extends 'show.html.twig'%}
+{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Produit{% endblock %}
  {% block hom %} <a href="{{ path('front_office') }}" class="nav-item nav-link">Home</a> {% endblock %}
@@ -7,9 +8,7 @@
             <p class="m-0"><a href="{{ path('front_office') }}">Home</a></p>
 
 {% endblock %}
-{% block filtre1 %} {% endblock %}
-{% block filtre2 %} {% endblock %}
-{% block size %} {% endblock %}
+
 {% block body %}
    <!-- <h1>Détails du produit</h1>
 
@@ -48,7 +47,7 @@
         <div id="product-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner border">
                 <div class="carousel-item active">
-                    <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="" class="card-img-top">
+                    <img src="{{asset('uploads/images/products/' ~ produit.getimageprod())}}" alt="" class="card-img-top">
                 </div>
 
             </div>
@@ -107,10 +106,10 @@
         <div class="d-flex pt-2">
             <p class="text-dark font-weight-medium mb-0 mr-2"></p>
             <div class="d-inline-flex">
-                <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button" onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button"    onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     SHARE PRODUCT on :</a>
                 <br>
-                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button " onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=378874173743140&sdk=joey&u=http://127.0.0.1:3306/produit/frontprod&display=popup&ref=plugin&src=share_button"onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a class="text-dark px-2" href="">
@@ -150,10 +149,116 @@
         {% endfor %}
     </div>
     </div>
-
-
-
     </div>
 {% endblock %}
-{% block rest %}
+
+
+{% block review %}
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="mb-4"> review for "{{ produit.nomprod }}"</h4>
+            <div class="media mb-4">
+                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                <div class="media-body">
+                    {% for comment in produit.comments %}
+                    {% if comment.parent == null %}
+                    <h6>Commentaire de {{comment.nickname}}<small> - <i>Publié le {{comment.getCreatAt|date("d/m/Y H:i") }}</i></small></h6>
+                   <div class="text-primary mb-2">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p> {{comment.content|raw}}</p>
+                        <button class="btn btn-primary px-3"><p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary ">Répondre</a></p> </button>
+
+
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="mb-4">Leave a review</h4>
+            <small>Your email address will not be published. Required fields are marked *</small>
+            <div class="d-flex my-3">
+                <p class="mb-0 mr-2">Your Rating * :</p>
+                <div class="text-primary">
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+            </div>
+
+                <div class="col-xs2 col-sm3", id="ajout-commentaire">
+                    <h2>Add Comment </h2>
+                    {{ form_start(commentForm,{'attr':{'novalidate':'novalidate' }})}}
+
+                    {{ form_label(commentForm.email,'your e-mail') }}
+                    {{ form_widget(commentForm.email) }}
+                    {{ form_errors(commentForm.email) }}
+
+                    {{ form_label(commentForm.nickname,'your nickname') }}
+                    {{ form_widget(commentForm.nickname) }}
+                    {{ form_errors(commentForm.nickname) }}
+
+                    {{ form_label(commentForm.content,'your content') }}
+                    {{ form_widget(commentForm.content) }}
+                    {{ form_errors(commentForm.content) }}
+
+                    {{ form_label(commentForm.rgbd,'Valider') }}
+                    {{ form_widget(commentForm.rgbd) }}
+                    {{ form_errors(commentForm.rgbd) }}
+
+
+                    {{ form_end(commentForm) }}
+                   <!-- <button type="submit" id="form_submit" name="form[submit]" class="btn btn-primary px-3">
+                        Leave Your Review
+                    </button>-->
+                </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block comments %}
+  <!-- <script>
+        window.onload = () => {
+
+            // On met un écouteur d'évènements sur tous les boutons répondre
+            document.querySelectorAll("[data-reply]").forEach(element => {
+                element.addEventListener("click", function(){
+                    console.log(this);
+                    //pour recuperder l'id du comment a repondre
+                     document.querySelector("#comments_parent").value = this.dataset.id;
+                });
+            });
+        }
+    </script> -->
+    <!--<div class="grix xs2 sm3 gutter-0 card">
+        <div class="col-xs2 col-sm3">
+            <h2>Liste des commentaires</h2>
+            {% for comment in produit.comments %}
+                {% if comment.parent == null %}
+
+                    <h3>Commentaire de {{comment.nickname}}</h3>
+                    <p>Publié le {{comment.getCreatAt|date("d/m/Y H:i") }}</p>
+                    <div>{{comment.content|raw}}</div>
+                    <!--data id contient lenuméro du commentaire quand veut répondre-->
+                <!--    <p><a href="#ajout-commentaire" data-reply data-id="{{comment.id}}" class="btn primary ">Répondre</a></p>
+                    {% for reply in comment.replies %}
+                        <p>Réponse publiée par {{reply.nickname}} le {{reply.getcreatedAt|date("d/m/Y H:i") }}</p>
+                        <div>{{reply.content|raw}}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="col-xs2 col-sm3", id="ajout-commentaire">
+            <h2>Ajouter un commentaire </h2>
+            {{ form(commentForm) }}
+        </div>
+    </div>-->
 {% endblock %}

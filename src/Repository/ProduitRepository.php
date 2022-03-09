@@ -78,7 +78,7 @@ class ProduitRepository extends ServiceEntityRepository
         return $this->getEntityManager()
             ->createQuery(
                 'SELECT p
-                FROM AppBundle:Produit p
+                FROM \App\Entity\Produit p
                 WHERE p.nomprod LIKE :str'
             )
             ->setParameter('str', '%'.$str.'%')

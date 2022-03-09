@@ -6,9 +6,12 @@ use App\Repository\CommentsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=CommentsRepository::class)
+ * use Symfony\Component\Validator\Constraints as Assert;
  */
 class Comments
 {
@@ -20,6 +23,7 @@ class Comments
     private $id;
 
     /**
+     * @Assert\NotBlank(message="le contenu  est obligatoire")
      * @ORM\Column(type="text")
      */
     private $content;
@@ -31,10 +35,15 @@ class Comments
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Votre e-mail est obligatoire")
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.")
      */
+
     private $email;
 
     /**
+     * @Assert\NotBlank(message="Votre pseudo est obligatoire")
      * @ORM\Column(type="string", length=255)
      */
     private $nickname;
@@ -45,6 +54,7 @@ class Comments
     private $creat_at;
 
     /**
+     * @Assert\NotBlank(message="Tu dois cocher cette case")
      * @ORM\Column(type="boolean")
      */
     private $rgbd;
