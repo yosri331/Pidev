@@ -69,7 +69,6 @@ class ProduitController extends AbstractController
             'form' => $form->createView()
             ]);
     }
-
     /**
      * @Route("/searchajax", name="produit_searchajax", methods={"GET", "POST"})
      */

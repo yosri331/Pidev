@@ -105,7 +105,7 @@
         <div class="d-flex pt-2">
             <p class="text-dark font-weight-medium mb-0 mr-2"></p>
             <div class="d-inline-flex">
-                <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button" onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button"    onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     SHARE PRODUCT on :</a>
                 <br>
                 <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=http://127.0.0.1:8000/produit/frontprod&display=popup&ref=plugin&src=share_button"
@@ -195,8 +195,25 @@
 
                 <div class="col-xs2 col-sm3", id="ajout-commentaire">
                     <h2>Add Comment </h2>
+                    {{ form_start(commentForm,{'attr':{'novalidate':'novalidate' }})}}
 
-                    {{ form_start(commentForm) }}
+                    {{ form_label(commentForm.email,'your e-mail') }}
+                    {{ form_widget(commentForm.email) }}
+                    {{ form_errors(commentForm.email) }}
+
+                    {{ form_label(commentForm.nickname,'your nickname') }}
+                    {{ form_widget(commentForm.nickname) }}
+                    {{ form_errors(commentForm.nickname) }}
+
+                    {{ form_label(commentForm.content,'your content') }}
+                    {{ form_widget(commentForm.content) }}
+                    {{ form_errors(commentForm.content) }}
+
+                    {{ form_label(commentForm.rgbd,'Valider') }}
+                    {{ form_widget(commentForm.rgbd) }}
+                    {{ form_errors(commentForm.rgbd) }}
+
+
                     {{ form_end(commentForm) }}
                    <!-- <button type="submit" id="form_submit" name="form[submit]" class="btn btn-primary px-3">
                         Leave Your Review
