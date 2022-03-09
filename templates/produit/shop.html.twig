@@ -17,6 +17,8 @@
 
 {% block filtre1 %}
     <div class="filter">
+        <h5 class="font-weight-semi-bold mb-4">Filter by </h5>
+
 {% include 'produit/filter.html.twig' with {form: form} only  %}
     </div>
 {% endblock %}

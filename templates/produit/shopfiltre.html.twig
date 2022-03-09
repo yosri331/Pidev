@@ -6,7 +6,7 @@
     }
 </style>
 <div class="card" style="font-weight: bold; font-size:1.5rem;">
-    <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="" class="card-img-top">
+    <img src="{{asset('uploads/images/products/' ~ produit.getimageprod())}}" alt="" class="card-img-top">
     <div class="card-body">
         <h5 class="card-title">{{ produit.nomprod }}</h5>
         <div class="card-title text-primary">

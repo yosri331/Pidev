@@ -19,7 +19,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use App\Entity\Utilisateur;
 use App\Controller\UtilisateurController;
 use App\Form\EventSearchType;
+use App\Repository\ReviewsRepository;
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\MakerBundle\EventRegistry;
@@ -104,33 +106,36 @@ class EventController extends AbstractController
      * @return \symfony\component\HttpFoundation\Response
      * @Route("/event/afficher/{id}" ,name="front-eventdisplay") 
      */
-    public function eventdisplay(EventRepository $rep,$id,ManagerRegistry $doctrine,Request $req){
+    public function eventdisplay(EventRepository $rep,$id,ManagerRegistry $doctrine,Request $req,UtilisateurRepository $userrep){
         $event=$rep->find($id);
-        $reviews=$rep->find($id);
-        $reviews=$reviews->getId();
-        $review =new Reviews();
+        $reviews=$event->getReviews();
+        $user=$userrep->find(1);
+        $review= new Reviews();
         $form=$this->createForm(ReviewType::class,$review);
         $form->add('Submit',SubmitType::class);
         $form->handleRequest($req);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted()){
             $desc=$form->get('description')->getData();
-            if(str_contains($desc,"putain")){
-
+            if(str_contains($desc,'putain')){
             }
             else{
             $em=$doctrine->getManager();
             $review->setDate(new \DateTime());
-            $event=$rep->find($id);
+            $review->setUtilisateur($user);
             $review->setEvent($event);
             $em->persist($review);
             $em->flush();
             return $this->redirectToRoute('front-eventdisplay',['id'=>$id]);
-        }
+        
+
+
+            }
+
         }
         return $this->render('event/front/eventdisplay.html.twig',['event'=>$event,'reviews'=>$reviews,'form'=>$form->createView()]);
-
         
-        }
+
+    }
 
     /**
      * @param Request $req
@@ -273,5 +278,57 @@ class EventController extends AbstractController
         $json=$normalizer->normalize($event,'json',['groups'=>'post:read']);
         return new Response(json_encode($json));
     } 
+    /**
+     * @Route("/afficherTri", name="triselonreviews")
+     */
+    public function TriParnbReviews(EventRepository $rep,UtilisateurRepository $userrep,Request $req,Request $request,ManagerRegistry $doctrine){
+        
+        $events=$rep->findAll();
+        $event = new Event();
+        $event1 = new Event();
+        $user=$userrep->find(1);
+        $form=$this->createForm(EventType::class,$event);
+        $searchform=$this->createForm(EventSearchType::class,$event1);
+        $searchform->add('Submit',SubmitType::class);
+        $form->add('Submit',SubmitType::class);
+        $form->handleRequest($req);
+        $searchform->handleRequest($request);
+        if($form->isSubmitted() ) {
+            $desc=$form->get('description')->getData();
+            if(str_contains($desc,'putain')){
+
+            }
+            else{
+
+            
+            $event->setUtilisateur($user);
+           
+            $em=$doctrine->getManager();
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('afficher-event');
+            }
+            
+            
+        }
+        if($searchform->isSubmitted()){
+            $nom=$event1->getNom();
+            $kek=$rep->SearchByName($nom);
+            return $this->render('event/afficherevent.html.twig',['event'=>$kek,'form'=>$form->createView(),'searchform'=>$searchform->createView()]);
+
+        }
+        else{
+        usort($events, fn($x,$y)=> $x->getnbComments() <=> $y->getnbComments());
+        $array=  array();
+        foreach($events as $a){
+            array_push($array,$a->getnbComments());
+        }
+    
+        
+        return $this->render('event/afficherevent.html.twig',['event'=>$events,'form'=>$form->createView(),'searchform'=>$searchform->createView(),'array' =>$array]);
+        
+    }
+        
+    }
     
 }

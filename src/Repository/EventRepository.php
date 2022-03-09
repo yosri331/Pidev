@@ -131,7 +131,12 @@ class EventRepository extends ServiceEntityRepository
         ->setParameters(['nom'=> $filter ,'nomuser' => $filter])
         ->getQuery();
         return $qb->execute();
+    }
 
+    
+    public function SortByComments(EventRepository $rep){
+        
+        $qb=$this->createQueryBuilder('e');
     }
     
 }

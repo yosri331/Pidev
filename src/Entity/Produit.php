@@ -73,6 +73,7 @@ class Produit
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="imageprod")
      * @var string
      */
     private $imageprod;

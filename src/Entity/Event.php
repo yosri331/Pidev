@@ -194,6 +194,10 @@ class Event
 
         return $this;
     }
+    public function getnbComments(){
+        $size=count($this->Reviews);
+        return $size;
+    }
 
    
 }

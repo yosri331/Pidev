@@ -158,10 +158,12 @@ class ProduitController extends AbstractController
     /**
      * @Route("/{id}/f", name="produit_showfront", methods={"GET","POST"})
      */
-    public function showfront(Produit $produit,Request $request): Response
+    public function showfront(Request $request,$id,ProduitRepository $rep): Response
     {
         // Partie commentaires
         // On crée le commentaire "vierge"
+        
+        $produitt=$rep->find($id);
         $comment =new Comments();
 
         // On génère le formulaire
@@ -171,7 +173,7 @@ class ProduitController extends AbstractController
         // Traitement du formulaire
         if($commentForm->isSubmitted() && $commentForm->isValid()){
             $comment->setCreatAt(new DateTime());
-            $comment->setProduits($produit);
+            $comment->setProduits($produitt);
 
            // On récupère le contenu du champ parentid
             $parentid = $commentForm->get("parent")->getData();
@@ -193,7 +195,7 @@ class ProduitController extends AbstractController
 
 
         return $this->render('produit/showfront.html.twig', [
-            'produit' => $produit,
+            'produit' => $produitt,
             'commentForm' => $commentForm->createView()
         ]);
     }

@@ -7,7 +7,9 @@
             <p class="m-0"><a href="{{ path('front_office') }}">Home</a></p>
 
 {% endblock %}
-
+{% block filtre1 %} {% endblock %}
+{% block filtre2 %} {% endblock %}
+{% block size %} {% endblock %}
 {% block body %}
    <!-- <h1>Détails du produit</h1>
 
@@ -108,8 +110,7 @@
                 <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button" onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     SHARE PRODUCT on :</a>
                 <br>
-                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button"
-                   onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button " onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a class="text-dark px-2" href="">
@@ -153,4 +154,6 @@
 
 
     </div>
+{% endblock %}
+{% block rest %}
 {% endblock %}

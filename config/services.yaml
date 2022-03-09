@@ -4,10 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-     app.path.terrain_directory: /assets/uploads/images/terrains
+     app.path.terrain_directory: /uploads/images/terrains
      app.path.events_directory: /uploads/images/events
-     app.path.product_images: /assets/uploads/images/events
+     app.path.product_images: /uploads/images/products
      images_directory: '%kernel.project_dir%/public/uploads/images'
+     app.path.event_images: /assets/uploads/images/events
 services:
     # default configuration for services in *this* file
     _defaults:

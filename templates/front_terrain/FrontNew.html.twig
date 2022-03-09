@@ -1,5 +1,5 @@
 {% extends '/ajoutFrSh.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
 
  {% block form %}
  {% endblock %}
@@ -84,8 +84,7 @@
         {{ form_errors(form.prix) }}
     {% endblock %}
     {% block image %}
-        <label>downolad image</label>
-        <br>
+       
         {{ form_widget(form.imageFile) }}
         {{ form_errors(form.imageFile) }}
     {% endblock %}

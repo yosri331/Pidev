@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -52,15 +52,17 @@ class FrontTerrainController extends AbstractController
     /**
      * @Route("/add", name="terrain_add", methods={"GET", "POST"})
      */
-    public function new(Request $request,ManagerRegistry $doctrine): Response
+    public function new(Request $request,EntityManagerInterface $entityManager): Response
     {
         $terrain = new Terrain();
         $form = $this->createForm(TerrainType::class, $terrain);
+        $form->add('Submit',SubmitType::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() ) {
-            $em=$doctrine->getManager();
-            $em->persist($terrain);
-            $em->flush();
+            $entityManager->persist($terrain);
+            $entityManager->flush();
+            
 
             return $this->redirectToRoute('terrainFront_index', [], Response::HTTP_SEE_OTHER);
         }

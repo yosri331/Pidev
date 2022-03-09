@@ -25,7 +25,7 @@
 
 {% for terrain in terrains %}
     {% block imageProd%}
-        <img src="{{ vich_uploader_asset(terrain, 'imageFile') }}" >    {% endblock %}
+        <img src="{{asset('uploads/images/terrains/' ~ terrain.getImageTerrain())}}" >    {% endblock %}
 
     {% block infoProd%}
         <h6 class="text-truncate mb-3">{{ terrain.localisation }}</h6>
