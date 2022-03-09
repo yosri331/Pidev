@@ -6,9 +6,7 @@
 
 
 {% block body %}
-
     <h2>Search A Post !!</h2>
-
     <div class="sidebar-search">
 
         <div class="input-group custom-search-form">
@@ -49,10 +47,10 @@
                                 var result = JSON.parse(msg);
                                 $.each(result, function(key, arr) {
                                     $.each(arr, function(id, value) {
-                                        if (key === 'posts') {
+                                        if (key === 'products') {
                                             if (id !== 'error') {
                                                 console.log(value[1]);
-                                                entitySelector.append('<li><b>'+value[1]+'</b><a href="/'+id+'">'+'<img src="/uploads/products/'+value[0]+'" style="width: 50px; height: 50px"/>'+'</a></li>');
+                                                entitySelector.append('<li><b>'+value[1]+'</b><a href="/produit/'+id+'">'+'<img src="/uploads/images/products'+value[0]+'" style="width: 50px; height: 50px"/>'+'</a></li>');
                                             } else {
                                                 entitySelector.append('<li class="errorLi">'+value+'</li>');
                                             }

@@ -70,7 +70,6 @@ class ProduitController extends AbstractController
             ]);
     }
 
-
     /**
      * @Route("/searchajax", name="produit_searchajax", methods={"GET", "POST"})
      */
@@ -78,7 +77,7 @@ class ProduitController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $requestString = $request->get('q');
-        $products =  $em->getRepository('AppBundle:Produit')->findEntitiesByString($requestString);
+        $products =  $em->getRepository(Produit::class)->findEntitiesByString($requestString);
         if(!$products) {
             $result['products']['error'] = "product Not found :( ";
         } else {
@@ -88,7 +87,7 @@ class ProduitController extends AbstractController
     }
     public function getRealEntities($products){
         foreach ($products as $products){
-            $realEntities[$products->getId()] = [$products->getImageFile(),$products->getNomprod()];
+            $realEntities[$products->getId()] = [$products->getImageprod(),$products->getNomprod()];
 
         }
         return $realEntities;

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CommentsRepository::class)
+ * use Symfony\Component\Validator\Constraints as Assert;
  */
 class Comments
 {
@@ -31,7 +32,9 @@ class Comments
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
+
     private $email;
 
     /**
