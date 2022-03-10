@@ -76,7 +76,7 @@
 
                 <th>Nom Produit</th>
                 <th>Dsecription produit</th>
-                <th>Image</th>
+                <th>Image Produit</th>
                 <th>Disponibilité</th>
                 <th>Prix</th>
                 <th>actions</th>
@@ -88,7 +88,7 @@
 
                 <td>{{ produit.nomprod }}</td>
                 <td>{{ produit.dsecriptionprod }}</td>
-                <td>{{ produit.image }}</td>
+                <td><img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt=""  class="card-img-top" style="width: 150px; height: 100px"></td>
                 <td>{{ produit.disponibilite }}</td>
                 <td>{{ produit.prix }}</td>
                 <td>

@@ -1,4 +1,38 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+{{ form_start(form,{'attr':{'novalidate':'novalidate' }})}}
+
+    {{ form_label(form.nomprod,'Nom produit') }}
+    {{ form_widget(form.nomprod) }}
+    {{ form_errors(form.nomprod) }}
+
+
+
+    {{ form_label(form.disponibilite,'Disponibilite') }}
+    {{ form_widget(form.disponibilite) }}
+    {{ form_errors(form.disponibilite) }}
+
+    {{ form_label(form.prix,'Prix') }}
+    {{ form_widget(form.prix) }}
+    {{ form_errors(form.prix) }}
+
+   {{ form_label(form.categorie,'Categorie') }}
+    {{ form_widget(form.categorie) }}
+    {{ form_errors(form.categorie) }}
+
+    {{ form_label(form.dsecriptionprod,'Description produit') }}
+    {{ form_widget(form.dsecriptionprod) }}
+   {{ form_errors(form.dsecriptionprod) }}
+
+   {{ form_label(form.image,'Couleur') }}
+    {{ form_widget(form.image) }}
+   {{ form_errors(form.image) }}
+
+   {{ form_label(form.promo,'Promotion') }}
+    {{ form_widget(form.promo) }}
+    {{ form_errors(form.promo) }}
+
+    {{ form_label(form.imageFile,'Image Produit') }}
+    {{ form_widget(form.imageFile) }}
+    {{ form_errors(form.imageFile) }}
+
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

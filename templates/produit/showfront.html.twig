@@ -1,5 +1,5 @@
 {% extends 'show.html.twig'%}
-
+{% form_theme commentForm 'bootstrap_4_layout.html.twig' %}
 {% block title %}Produit{% endblock %}
  {% block hom %} <a href="{{ path('front_office') }}" class="nav-item nav-link">Home</a> {% endblock %}
 {% block header %}
@@ -108,8 +108,7 @@
                 <a href="https://www.facebook.com/sharer/sharer.php?app_id=1460941267346567&sdk=joey&u=https://chillyfacts.com/create-facebook-share-button-for-website-webpages/&display=popup&ref=plugin&src=share_button"    onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     SHARE PRODUCT on :</a>
                 <br>
-                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=http://127.0.0.1:8000/produit/frontprod&display=popup&ref=plugin&src=share_button"
-                   onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
+                <a class="text-dark px-2" href="https://www.facebook.com/sharer/sharer.php?app_id=322079929889842&sdk=joey&u=http://127.0.0.1:8000/produit/frontprod&display=popup&ref=plugin&src=share_button" onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a class="text-dark px-2" href="">

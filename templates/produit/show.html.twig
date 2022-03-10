@@ -6,7 +6,11 @@
     <h1>Détails du produit</h1>
     <table class="table">
         <tbody>
+        <tr>
+            <th>Image du produit</th>
 
+            <td><img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt=""  class="card-img-top" style="width: 350px; height: 200px"></td>
+        </tr>
             <tr>
                 <th>Nom produit</th>
 
@@ -33,7 +37,7 @@
 <div class="btn-group btn-group-toggle" data-toggle="buttons">
     <label class="btn btn-secondary active">
 
-    <a href="{{ path('produit_search') }}">back to list</a>
+    <a href="{{ path('produit_index') }}">back to list</a>
     </label>
         <label class="btn btn-secondary">
     <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
