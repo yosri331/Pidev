@@ -82,7 +82,7 @@ class ReviewController extends AbstractController
         $form=$this->createForm(ReviewType::class,$review); 
         $form->add('Update',SubmitType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() ){
             $review->setDate(new \DateTime());
             $em=$doctrine->getManager();
             $em->flush();

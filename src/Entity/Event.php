@@ -68,6 +68,7 @@ class Event
         $this->Reviews = new ArrayCollection();
     }
      /**
+     
      * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
      * @var File
      */
@@ -167,7 +168,7 @@ class Event
 
         return $this;
     }
-    public function setImageFile(File $image = null)
+    public function setImageFile(?File $image=null ): void
     {
         $this->imageFile = $image;
 
@@ -179,7 +180,7 @@ class Event
             $this->updatedAt = new \DateTime('now');
         }
     }
-    public function getImageFile(){
+    public function getImageFile(): ?File{
         return $this->imageFile;
     }
 
@@ -197,6 +198,11 @@ class Event
     public function getnbComments(){
         $size=count($this->Reviews);
         return $size;
+    }
+    public function __toString()
+    {
+        $date=$this->getDate()->format('Y-m-d');
+        return (string) "nom:".$this->getNom()." Description:".$this->getDescription()." date:".$date."Participants:".$this->getParticipants();
     }
 
    

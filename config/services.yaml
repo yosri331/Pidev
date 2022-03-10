@@ -9,6 +9,8 @@ parameters:
      app.path.product_images: /uploads/images/products
      images_directory: '%kernel.project_dir%/public/uploads/images'
      app.path.event_images: /assets/uploads/images/events
+    
+     upload_directory: '%kernel.project_dir%/public/upload/profile'
 services:
     # default configuration for services in *this* file
     _defaults:

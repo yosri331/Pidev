@@ -26,6 +26,13 @@ class UtilisateurController extends AbstractController
             'controller_name' => 'UtulisateurController',
         ]);
     }
+     /**
+         * @Route("/home", name="home")
+         */
+        public function home(Request $request ){
+
+            return $this->render("home/index.html.twig");
+        }
 
     public function getUtilisateur(ManagerRegistry $doctrine){
         $user=$doctrine->getRepository(UtilisateurRepository::class)->find(1);

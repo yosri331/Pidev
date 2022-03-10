@@ -1,0 +1,50 @@
+{% extends "event/back.html.twig" %}
+
+{% block title %}Utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Utilisateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ utilisateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ utilisateur.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ utilisateur.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ utilisateur.email }}</td>
+            </tr>
+            <tr>
+                <th>Num_tel</th>
+                <td>{{ utilisateur.numTel }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ utilisateur.type }}</td>
+            </tr>
+            <tr>
+                <th>Pays</th>
+                <td>{{ utilisateur.pays }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ utilisateur.password }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <a href="{{ path('app_muser_index') }}">back to list</a>
+
+    <a href="{{ path('app_muser_edit', {'id': utilisateur.id}) }}">edit</a>
+
+    
+{% endblock %}

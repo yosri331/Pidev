@@ -32,6 +32,17 @@ class TerrainRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    /**
+ * Returns number of "terrains" per date
+ * @Return void
+ */
+public function countByDate(){
+    $query=$this->createQueryBuilder('a')
+        ->select('SUBSTRING(a.updatedAt,1 , 10) as dateCreation,
+         COUNT(a) as count')
+        ->groupBy('dateCreation');
+    return $query->getQuery()->getResult();
+}
 
 
     /*

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Form\ReviewType;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use App\Entity\Reviews;
 use App\Form\EventType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,10 +23,15 @@ use App\Form\EventSearchType;
 use App\Repository\ReviewsRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\MakerBundle\EventRegistry;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+use Symfony\Component\VarExporter\Internal\Hydrator;
 
 class EventController extends AbstractController
 {
@@ -176,12 +182,17 @@ class EventController extends AbstractController
      */
     public function modifier(EventRepository $rep,$id,ManagerRegistry $doctrine,Request $request){
         $event=$rep->find($id);
+        
+        
         $form=$this->createForm(EventType::class,$event); 
         $form->add('Update',SubmitType::class);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $event->setDate(new \DateTime());
-            $em=$doctrine->getManager();
+            $em=$doctrine->getManager(); 
+            
+            
+        
             $em->flush();
             return $this->redirectToRoute('afficher-event');
         }
@@ -330,5 +341,47 @@ class EventController extends AbstractController
     }
         
     }
+    private function getData(EventRepository $rep): array
+    {
+        /**
+         * @var $events Event[]
+         */
+        $list = array() ;
+        $events = $rep->findAll(Query::HYDRATE_ARRAY);
+
+        foreach($events as $event){
+            $list[] = $event->__toString();
+        }
+        return $events;
+    }
+    /**
+     * @Route("/export",  name="export")
+     */
+    public function export(EventRepository $rep)
+    {
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setTitle('Events List');
+
+        $sheet->getCell('A1')->setValue('Nom');
+        $sheet->getCell('B1')->setValue('Description');
+        $sheet->getCell('C1')->setValue('Date');
+        $sheet->getCell('D1')->setValue('Participants');
+        
+
+
+        // Increase row cursor after header write
+        $sheet->fromArray($this->getData($rep),null, 'A2', true);
+
+
+        $writer = new Xlsx($spreadsheet);
+
+        $writer->save('helloworld.xlsx');
+
+        return $this->render("event/excel_page.html.twig");
+    }
+
     
 }
