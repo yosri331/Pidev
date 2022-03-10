@@ -128,6 +128,7 @@ class EventRepository extends ServiceEntityRepository
         ->orWhere('e.description = :nom')
         ->orWhere('e.utilisateur = :nomuser')
         ->orWhere('e.id = :nom')
+        ->orWhere('e.date =:nom')
         ->setParameters(['nom'=> $filter ,'nomuser' => $filter])
         ->getQuery();
         return $qb->execute();

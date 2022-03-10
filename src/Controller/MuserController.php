@@ -97,4 +97,7 @@ class MuserController extends AbstractController
         $em->flush();
         return $this->redirectToRoute('app_muser_index', [], Response::HTTP_SEE_OTHER);
     }
+    public function login(){
+        
+    }
 }

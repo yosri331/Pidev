@@ -1,14 +1,17 @@
 <?php
 
 
+
 namespace App\Controller;
 use App\Entity\Utilisateur;
+use Symfony\Component\HttpFoundation\RequestStack;
 use App\Form\ReviewType;
 use App\Entity\Reviews;
 use App\Form\EventType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\Event;
+use App\Form\LoginType;
 use App\Repository\EventRepository;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,7 +21,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UtilisateurController extends AbstractController
+
+
 {
+    
+
     #[Route('/utilisateur', name: 'utilisateur')]
     public function index(): Response
     {
@@ -38,4 +45,6 @@ class UtilisateurController extends AbstractController
         $user=$doctrine->getRepository(UtilisateurRepository::class)->find(1);
         return $user;
     }
+   
+
 }

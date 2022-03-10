@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -27,6 +28,7 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Username is required")
      */
     private $nom;
 
@@ -37,6 +39,9 @@ class Event
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\Type("\DateTime")
+     * @Assert\NotBlank(message="date is required")
+     * @Assert\GreaterThan("today UTC")
      */
     private $date;
 
@@ -60,6 +65,7 @@ class Event
 
     /**
      * @ORM\OneToMany(targetEntity=Reviews::class, mappedBy="event")
+     * @ORM\JoinColumn(onDelete="CASCADE") 
      */
     private $Reviews;
 
