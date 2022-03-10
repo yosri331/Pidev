@@ -21,8 +21,8 @@
                 <td>{{ categorie.nomcat }}</td>
                 <td>{{ categorie.descriptioncat }}</td>
                 <td>
-                    <a href="{{ path('categorie_show', {'id': categorie.id}) }}">show</a>
-                    <a href="{{ path('categorie_edit', {'id': categorie.id}) }}">edit</a>
+                    <button type="button" class="btn btn-outline-primary">  <a href="{{ path('categorie_show', {'id': categorie.id}) }}">show</a></button>
+                    <button type="button" class="btn btn-outline-primary"> <a href="{{ path('categorie_edit', {'id': categorie.id}) }}">edit</a></button>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +33,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('categorie_new') }}">Create new</a>
+    <a  href="{{ path('categorie_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> Create new</a> </button>
+
 {% endblock %}

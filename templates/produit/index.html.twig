@@ -92,8 +92,8 @@
                 <td>{{ produit.disponibilite }}</td>
                 <td>{{ produit.prix }}</td>
                 <td>
-                    <a href="{{ path('produit_show', {'id': produit.id}) }}">show</a>
-                    <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a>
+                    <button type="button" class="btn btn-outline-primary"> <a href="{{ path('produit_show', {'id': produit.id}) }}">show</a> </button>
+                    <button type="button" class="btn btn-outline-primary"> <a href="{{ path('produit_edit', {'id': produit.id}) }}">edit</a> </button>
                 </td>
             </tr>
         {% else %}
@@ -104,5 +104,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('produit_new') }}">Create new</a>
+    <a  href="{{ path('produit_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true"> Create new</a> </button>
 {% endblock %}
