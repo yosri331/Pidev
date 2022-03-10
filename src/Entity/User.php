@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -20,92 +22,106 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     *@Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $nom;
+    private $email;
+  
+    
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="json")
      */
-    private $prenom;
-
-    /**
-     * @ORM\Column(type="string", length=30)
+    private $roles = [];
+      /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
      */
-    private $date_naissance;
-
+    private $plainPassword;
     /**
-     * @ORM\Column(type="string", length=100)
+     * @var string The hashed password
+     * @ORM\Column(type="string")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $num_tel;
+    private $username;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="boolean")
      */
-    private $pays;
+    private $isVerified = false;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private $Telephone;
 
     /**
-     * @ORM\OneToMany(targetEntity=Reclamation::class, mappedBy="id_user")
+     * @ORM\Column(type="boolean")
      */
-    private $reclamations;
+    private $isExpired = false;
 
-    public function __construct()
-    {
-        $this->reclamations = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Image;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getEmail(): ?string
     {
-        return $this->nom;
+        return $this->email;
     }
 
-    public function setNom(string $nom): self
+    public function setEmail(string $email): self
     {
-        $this->nom = $nom;
+        $this->email = $email;
+
+        return $this;
+    }
+   
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getDateNaissance(): ?string
-    {
-        return $this->date_naissance;
-    }
-
-    public function setDateNaissance(string $date_naissance): self
-    {
-        $this->date_naissance = $date_naissance;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -117,73 +133,96 @@ class User
         return $this;
     }
 
-    public function getNumTel(): ?int
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
     {
-        return $this->num_tel;
-    }
-
-    public function setNumTel(?int $num_tel): self
-    {
-        $this->num_tel = $num_tel;
-
-        return $this;
-    }
-
-    public function getPays(): ?string
-    {
-        return $this->pays;
-    }
-
-    public function setPays(string $pays): self
-    {
-        $this->pays = $pays;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
+        return null;
     }
 
     /**
-     * @return Collection|Reclamation[]
+     * @see UserInterface
      */
-    public function getReclamations(): Collection
+    public function eraseCredentials()
     {
-        return $this->reclamations;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
-    public function addReclamation(Reclamation $reclamation): self
+    public function setUsername(string $username): self
     {
-        if (!$this->reclamations->contains($reclamation)) {
-            $this->reclamations[] = $reclamation;
-            $reclamation->setIdUser($this);
-        }
+        $this->username = $username;
 
         return $this;
     }
 
-    public function removeReclamation(Reclamation $reclamation): self
+    public function isVerified(): bool
     {
-        if ($this->reclamations->removeElement($reclamation)) {
-            // set the owning side to null (unless already changed)
-            if ($reclamation->getIdUser() === $this) {
-                $reclamation->setIdUser(null);
-            }
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+    public function isExpired(): bool
+    {
+        return $this->isExpired;
+    }
+
+    public function setIsExpired(bool $isExpired): self
+    {
+        $this->isExpired = $isExpired;
+
+        return $this;
+    }
+    public function addRoles(string $roles): self
+    {
+        if (!in_array($roles, $this->roles)) {
+            $this->roles[] = $roles;
         }
 
         return $this;
     }
-    public function __toString()
+    public function getPlainPassword()
     {
-        return (string)$this->getId();
+        return $this->plainPassword;
     }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->Telephone;
+    }
+
+    public function setTelephone(string $Telephone): self
+    {
+        $this->Telephone = $Telephone;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->Image;
+    }
+
+    public function setImage(?string $Image): self
+    {
+        $this->Image = $Image;
+
+        return $this;
+    }
+
+   
 }
