@@ -102,7 +102,7 @@ class EventController extends AbstractController
      * @Route("/event/afficher" ,name="front-afficher-events") 
      */
     public function frontafficher(EventRepository $rep){
-        $event=$rep->findAll();
+        $event=$rep->SortBydate();
         return $this->render('event/front/afficher-events.html.twig',['event'=>$event]);
 
     

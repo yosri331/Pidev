@@ -135,9 +135,16 @@ class EventRepository extends ServiceEntityRepository
     }
 
     
-    public function SortByComments(EventRepository $rep){
+    public function SortByComments(){
         
         $qb=$this->createQueryBuilder('e');
+    }
+    public function SortBydate(){
+        
+        $qb=$this->createQueryBuilder('e')
+        ->orderBy('e.date ' ,'DESC')
+        ->getQuery();
+        return $qb->execute();
     }
     
 }

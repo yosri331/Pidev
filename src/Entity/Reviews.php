@@ -54,6 +54,11 @@ class Reviews
      */
     private $event;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $hidden;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -127,6 +132,18 @@ class Reviews
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getHidden(): ?bool
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(?bool $hidden): self
+    {
+        $this->hidden = $hidden;
 
         return $this;
     }

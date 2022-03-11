@@ -27,9 +27,10 @@
             <th>ID</th>
             <th>name</th>
             <th>description</th>
-            <th>date</th>
-            <th>image</th>
-            <th>event id</th>
+            <th>hidden</th>
+            <th>Score</th>
+            <th>Date</th>
+            
         </tr>
         
         {% for a in review %}
@@ -47,6 +48,10 @@
                 {{ a.description }}
             </td>
             <td>
+                {{ a.hidden }}
+            </td>
+            <td>
+
                 {{ a.score }}
             </td>
             <td>{{ a.date|date('Y-m-d') }} </td>
@@ -54,6 +59,7 @@
             <td>
                 <a href="{{ path('delete-review',{'id':a.id,'id_event':id }) }}" class="btn btn-secondary">Delete Review</a>
                 <a href="{{ path('modifier-review',{'id':a.id,'id_event':id }) }}" class="btn btn-secondary">Update Review</a>
+                <a href="{{ path('hide_comment',{'id':a.id,'id_event':id }) }}" class="btn btn-secondary">Hide Review</a>
                 
             </td>
         </tr>

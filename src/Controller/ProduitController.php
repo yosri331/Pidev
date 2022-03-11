@@ -177,6 +177,7 @@ public function getRealEntities($products){
         if($commentForm->isSubmitted() && $commentForm->isValid()){
             $comment->setCreatAt(new DateTime());
             $comment->setProduits($produitt);
+            $comment->setActive(true);
 
            // On récupère le contenu du champ parentid
             $parentid = $commentForm->get("parent")->getData();

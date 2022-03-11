@@ -11,6 +11,7 @@
                     <img  class="img-fluid" src="{{asset('assets/uploads/images/events/' ~ e.getImage())}}" alt="">
                 </a>
                 <h5 class="font-weight-semi-bold m-0">{{ e.nom }}</h5>
+                <h5> planned for  {{ e.date|date('d-m-Y') }}  </h5>
             </div>
         </div>
         

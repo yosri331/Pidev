@@ -38,6 +38,7 @@ class ReviewController extends AbstractController
 
     
     }
+    
     /**
      *@Route("supprimer-review/{id}/{id_event}",name="delete-review")
      */
@@ -90,6 +91,17 @@ class ReviewController extends AbstractController
         }
         return $this->render('event/modifier-review.html.twig',['form'=>$form->createView()]);
 
+    }
+    /**
+     *@Route("hide_comment/{id}/{id_event}",name="hide_comment")
+     */
+    public function masquerReview(ReviewsRepository $rep,$id,$id_event,ManagerRegistry $doctrine){
+        $review=$rep->find($id);
+        $review->setHidden(true);
+        $em=$doctrine->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('afficher-comments',['id'=>$id_event]);
     }
     
 
