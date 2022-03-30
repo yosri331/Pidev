@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <th>Image</th>
-                <td>{{ produit.image }}</td>
+                <td><img src="{{asset('uploads/images/products/' ~ produit.getimageprod())}}" ></td>
             </tr>
             <tr>
                 <th>Disponibilité</th>

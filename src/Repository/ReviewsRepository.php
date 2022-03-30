@@ -44,6 +44,14 @@ class ReviewsRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+    public function getReviews(int $id){
+        $qb=$this->createQueryBuilder('e')
+        ->where('e.event_id LIKE :id')
+        ->andWhere('e.hidden LIKE :bool')
+        ->setParameters(['id' => '%' . $id . '%','bool' => '%' . true . '%'])
+        ->getQuery();
+        return $qb->execute();
+    }
 
     // /**
     //  * @return Reviews[] Returns an array of Reviews objects

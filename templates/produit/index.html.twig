@@ -89,7 +89,7 @@
 
                 <td>{{ produit.nomprod }}</td>
                 <td>{{ produit.dsecriptionprod }}</td>
-                <td>{{ produit.image }}</td>
+                <td><img src="{{asset('uploads/images/products/' ~ produit.getimageprod())}}" > </td>
                 <td>{{ produit.disponibilite }}</td>
                 <td>{{ produit.prix }}</td>
                 <td>

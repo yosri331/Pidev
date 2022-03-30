@@ -134,9 +134,12 @@
                                         <i class="far fa-star"></i>
                                     </div>
                                     <p>{{ review.description }}</p>
+                                    <a href="{{ path('modifier-review-front',{'id':review.id,'id_event':event.id}) }}" class="btn">Update </a>
+                                     <a href="{{ path('delete-review-front',{'id':review.id,'id_event':event.id}) }}" class="btn ">Delete </a>
                                 </div>
                             </div>
                         </div>
+                        
                         {% endif %}
                         {% endfor  %}
                         {{form_start(form) }}

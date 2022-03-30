@@ -56,6 +56,7 @@ class Produit
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="prix du produit est obligatoire")
+     * @Assert\Positive
      * @Groups("produit")
      */
     private $prix;

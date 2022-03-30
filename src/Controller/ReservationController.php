@@ -31,15 +31,17 @@ class ReservationController extends AbstractController
     /**
      * @Route("/new/{id}", name="appReservation_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, ReservationRepository $reservationRepository): Response
+    public function new(Request $request, ReservationRepository $reservationRepository,$id,TerrainRepository $rep): Response
     {
+        $terrain=$rep->find($id);
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $reservation->setTerrain($terrain);
             $reservationRepository->add($reservation);
-            return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('terrain_list');
         }
 
         return $this->render('reservation/show.html.twig', [

@@ -51,6 +51,18 @@ class ReviewController extends AbstractController
 
     }
     /**
+     *@Route("supprimer-review/{id}/{id_event}",name="delete-review-front")
+     */
+    public function deleteEventfront(ReviewsRepository $rep,EventRepository $everep,$id,ManagerRegistry $doctrine,$id_event){
+        $event=$rep->find($id);
+        $em=$doctrine->getManager();
+        $em->remove($event);
+        $em->flush();
+        $events=$everep->findAll();
+        return $this->render('event/front/afficher-events.html.twig',['event'=>$events]);
+
+    }
+    /**
      * @param Request $req
      * @param $
      * @return \Symfony\Component\HttpFoundation\Response
@@ -90,6 +102,24 @@ class ReviewController extends AbstractController
             return $this->redirectToRoute('afficher-comments',['id'=>$id_event]);
         }
         return $this->render('event/modifier-review.html.twig',['form'=>$form->createView()]);
+
+    }
+    /**
+     *@Route("modifier/{id}/{id_event}",name="modifier-review-front")
+     */
+    public function updateReviewfront(ReviewsRepository $rep, EventRepository $everep,ManagerRegistry $doctrine,$id,$id_event,Request $request){
+        $events=$everep->findAll();
+        $review=$rep->find($id);
+        $form=$this->createForm(ReviewType::class,$review); 
+        $form->add('Update',SubmitType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() ){
+            $review->setDate(new \DateTime());
+            $em=$doctrine->getManager();
+            $em->flush();
+            return $this->redirectToRoute('afficher-comments',['id'=>$id_event]);
+        }
+        return $this->render('event/front/afficher-events.html.twig',['event'=>$events]);
 
     }
     /**

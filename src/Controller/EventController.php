@@ -30,6 +30,8 @@ use Symfony\Bundle\MakerBundle\EventRegistry;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Controller\EventNormalizerController;
+use App\Controller\ReviewNormalizerController;
 
 use Symfony\Component\VarExporter\Internal\Hydrator;
 
@@ -84,6 +86,7 @@ class EventController extends AbstractController
             
         }
         if($searchform->isSubmitted()){
+            
             $nom=$event1->getNom();
             $kek=$rep->SearchByName($nom);
             return $this->render('event/afficherevent.html.twig',['event'=>$kek,'form'=>$form->createView(),'searchform'=>$searchform->createView()]);
@@ -248,13 +251,27 @@ class EventController extends AbstractController
     /**
      *@Route("/AllEvents" ,name="AllEvents")
      */
-    public function AllEvents(NormalizerInterface $normalizer,EventRepository $rep)
+    public function AllEvents(EventNormalizerController $normalizer,NormalizerInterface $norminterface,EventRepository $rep)
     {
         $events=$rep->findAll();
-        $jsonContent = $normalizer->normalize($events, 'json',['groups'=>'post:read']);
+        $users=$rep->findAll();
+        
+        $jsonContent = $norminterface->normalize($events, 'json',['groups'=>'post:read']);
+        
+
         return new Response(json_encode($jsonContent));
 
 
+
+    }
+    /**
+     * @Route("/ReviewByEventId/{id}",name="ReviewByEventId")
+     */
+    public function jsonReviewByEventId(ReviewNormalizerController $normalizer,$id,NormalizerInterface $norminterface,EventRepository $rep){
+        $event=$rep->find($id);
+        $reviews=$event->getVisibleComments();
+        $jsonContent = $norminterface->normalize($reviews,'json',['groups'=>'post:read']);
+        return new Response(json_encode($jsonContent));
 
     }
     /**
@@ -273,6 +290,40 @@ class EventController extends AbstractController
         $json=$normalizer->normalize($event,'json',['groups'=>'post:read']);
         return new Response(json_encode($json));
     } 
+    /**
+     * @Route("/participerjson/{id}/{nom}", name="participerjson")
+     */
+    public function participerjson(Request $req,$nom,NormalizerInterface $normalizer,$id,EventRepository $rep,ManagerRegistry $doctrine){
+        $em=$doctrine->getManager();
+        $event=$rep->find($id);
+        $event->addParticipants($nom);
+        $em->flush();
+        $json=$normalizer->normalize($event,'json',['groups'=>'post:read']);
+        return new Response(json_encode($json));
+
+        
+        
+    }
+    /**
+     * @Route("/addreviewjson/{event_id}", name="addreviewjson")
+     */
+    public function addReviewjson(Request $req,NormalizerInterface $normalizer,$event_id,EventRepository $rep,ManagerRegistry $doctrine,UtilisateurRepository $userrep){
+        $em=$doctrine->getManager();
+        $event=$rep->find($event_id);
+        $review = new Reviews();
+        $review->setNom($req->get('nom'));
+        $review->setDescription($req->get('description'));
+        $review->setScore($req->get('score'));
+        $review->setDate(new \Datetime($req->get('date')));
+        $review->setEvent($event);
+        $review->setHidden(true);
+        $review->setUtilisateur($userrep->find(1));
+        $em->persist($review);
+        $em->flush();
+        $json=$normalizer->normalize($review,'json',['groups'=>'post:read']);
+        return new Response(json_encode($json));
+
+    }
     /**
      * @Route("jsonUpdateEvent/{id}" ,name="jsonUpdateEvent")
      */

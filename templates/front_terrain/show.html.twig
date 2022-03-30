@@ -20,15 +20,7 @@
         }
     </style>
 {% endblock %}
-{% block reservation %}
-    <div class="btn btn-primary px-3">
-        <a href="{{ path('appReservation_new') }}" class="btn btn-sm text-dark p-0"><i class="fa fa-shopping-cart mr-1"></i> Reserve Now !</a>
-    </div>
 
-{% block others %}
-{% endblock %}
-
-{% endblock %}
 
 {% block image %}
     <div class="carousel-item active">
@@ -69,6 +61,7 @@
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ path('show_terrain', {'id': terrains.id}) }}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                
                         </div>
             {% endfor %}
         </div>

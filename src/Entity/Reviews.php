@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReviewsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewsRepository::class)
@@ -21,17 +22,20 @@ class Reviews
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Username is required")
+     * @Groups("post:read")
      */
     private $nom;
 
     /**
       * @Assert\NotBlank(message="Username is required")
      * @ORM\Column(type="string", length=255)
+     * @Groups("post:read")
      */
     private $description;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups("post:read")
      */
     private $date;
 
@@ -39,12 +43,14 @@ class Reviews
      * @Assert\Range(max="5" , min="0" )
      * @Assert\Type("integer")
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups("post:read")
      */
     private $score;
 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="Reviews")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("post:read")
      */
     private $utilisateur;
 
@@ -56,6 +62,7 @@ class Reviews
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("post:read")
      */
     private $hidden;
 

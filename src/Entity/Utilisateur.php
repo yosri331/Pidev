@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
@@ -18,41 +19,49 @@ class Utilisateur
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("user")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Groups("user")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Groups("user")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("user")
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("user")
      */
     private $num_tel;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups("user")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("user")
      */
     private $pays;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("user")
      */
     private $password;
 

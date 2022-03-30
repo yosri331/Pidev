@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -23,17 +24,21 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Username is required")
+     * @Groups("post:read")
      */
     private $nom;
+    
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("post:read")
      */
     private $description;
 
@@ -41,18 +46,18 @@ class Event
      * @ORM\Column(type="date")
      * @Assert\Type("\DateTime")
      * @Assert\NotBlank(message="date is required")
-     * @Assert\GreaterThan("today UTC")
+     * @Groups("post:read")
      */
     private $date;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
      */
     private $image;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("post:read")
      */
     private $participants;
     
@@ -60,6 +65,7 @@ class Event
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("post:read")
      */
     private $utilisateur;
 
@@ -144,6 +150,9 @@ class Event
 
         return $this;
     }
+    public function addParticipants(?string $participants){
+        $this->participants = $this->participants . " ;" . $participants;
+    }
 
     public function getUtilisateur(): ?Utilisateur
     {
@@ -177,6 +186,7 @@ class Event
     public function setImageFile(?File $image=null ): void
     {
         $this->imageFile = $image;
+        
 
         // VERY IMPORTANT:
         // It is required that at least one field changes if you are using Doctrine,
@@ -202,8 +212,33 @@ class Event
         return $this;
     }
     public function getnbComments(){
-        $size=count($this->Reviews);
+        $size=0;
+        $reviews=$this->getReviews();
+        foreach($reviews as $review){
+            if($review->getHidden()==true){
+                
+            }
+            else{
+                $size++;
+            }
+        }
         return $size;
+    }
+     /**
+     * @return Collection<int, Reviews>
+     */
+    public function getVisibleComments(): Collection {
+        $collection = new ArrayCollection();
+        $reviews=$this->getReviews();
+        foreach($reviews as $review){
+            if($review->getHidden()==true){
+                $collection[] =$review; 
+            }
+            
+            
+        }
+        return $collection;
+
     }
     public function __toString()
     {
